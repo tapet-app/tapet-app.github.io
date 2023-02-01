@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.sharpregion.tapet",
+    "sha256_cert_fingerprints":
+    ["A5:D7:EF:9B:EF:8C:2C:5F:74:14:25:C7:9A:D5:AA:5C:1E:3D:D6:99:E1:0C:C0:9D:61:2A:8A:50:A8:50:1E:30"]
+  }
+}]
