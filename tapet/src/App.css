@@ -5,6 +5,11 @@ html {
 
 #logo {
   margin-top: 50px;
+  max-width: 300px;
+}
+
+#patterns {
+  max-width: 800px;
 }
 
 #google-play {
