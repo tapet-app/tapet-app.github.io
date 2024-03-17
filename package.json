@@ -1,0 +1,11 @@
+{
+  "homepage": "https://tapet-app.github.io/tapet-app.github.io/tapet",
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "react-scripts build"
+  }
+}
