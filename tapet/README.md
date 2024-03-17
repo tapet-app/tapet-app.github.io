@@ -20,3 +20,17 @@ Using node package manager to run the following commands.
 ```
 
 After running npm run build you can check the dist folder for the final html files.
+
+
+---------------------------
+deploy:
+
+1. select the tapet-web project:
+>gcloud config set project tapet-web
+
+2. build from /tapet:
+>npm run build
+
+3. deploy:
+>gcloud app deploy
+
