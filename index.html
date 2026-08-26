@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Tapet doesn't download wallpapers — it creates them. One-of-a-kind abstract wallpapers, generated on your phone at your exact resolution. 110+ patterns, 1000+ palettes, fully offline, no ads.">
+<meta property="og:title" content="Tapet — Wallpapers, born on your phone">
+<meta property="og:description" content="Tapet doesn't download wallpapers — it creates them. Infinite one-of-a-kind abstract wallpapers, generated on-device, fully offline.">
+<meta property="og:url" content="https://tapet.app">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://tapet.app/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<title>Tapet — Wallpapers, born on your phone</title>
+<style>
+  @font-face {
+    font-family: "Brunson";
+    src: url("assets/fonts/brunson.ttf") format("truetype");
+    font-display: swap;
+  }
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --text: #ededed;
+    --text-dim: #9f9f9f;
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #4fd8c4;
+    --accent-ink: #071e1a;
+    --wordmark: "Brunson", "Arial Black", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .skip-link {
+    position: absolute; top: -100%; left: 0; z-index: 1000;
+    padding: 0.75rem 1.5rem; background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; text-decoration: none;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* ---------- Nav ---------- */
+  .site-nav {
+    position: fixed; inset-inline: 0; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem clamp(1.2rem, 4vw, 2.5rem);
+    background: linear-gradient(to bottom, rgba(10,10,10,0.75), rgba(10,10,10,0));
+    pointer-events: none;
+  }
+  .site-nav > * { pointer-events: auto; }
+  .brand {
+    font-family: var(--wordmark);
+    font-size: 1.55rem;
+    color: #fff;
+    text-decoration: none;
+    line-height: 1;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
+    padding-block: 0.4rem;
+  }
+  .nav-cta {
+    display: inline-flex; align-items: center;
+    min-height: 44px;
+    padding: 0.45rem 1.25rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.92);
+    color: #0a0a0a;
+    font-weight: 700; font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 150ms ease-out, background 150ms ease-out;
+  }
+  .nav-cta:hover, .nav-cta:focus-visible { transform: translateY(-1px); background: #fff; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .hero-canvas { position: absolute; inset: 0; z-index: -2; }
+  .hero-canvas canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    transition: opacity 1600ms ease-in-out;
+  }
+  .hero-scrim {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse at 50% 55%, rgba(5,5,5,0.6) 0%, rgba(5,5,5,0.35) 55%, rgba(5,5,5,0.2) 100%),
+      linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0) 25%),
+      linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0) 30%);
+  }
+  .hero-inner { text-align: center; width: min(92%, 46rem); padding-block: 6rem; }
+  .hero h1 {
+    font-size: clamp(2.6rem, 1.4rem + 7vw, 5.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.9);
+  }
+  .hero p.sub {
+    margin: 1.5rem auto 2.5rem;
+    max-width: 34rem;
+    font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
+    color: #e0e0e0;
+    text-shadow: 0 1px 14px rgba(0,0,0,0.9);
+    text-wrap: balance;
+  }
+  .hero-actions { display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    min-height: 48px;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(10,10,10,0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    font: inherit; font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 150ms ease-out, background 150ms ease-out, border-color 150ms ease-out;
+  }
+  .btn-ghost:hover, .btn-ghost:focus-visible { transform: translateY(-1px); border-color: rgba(255,255,255,0.7); }
+  .btn-solid {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    min-height: 48px;
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.92);
+    color: #0a0a0a;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 150ms ease-out, background 150ms ease-out;
+  }
+  .btn-solid:hover, .btn-solid:focus-visible { transform: translateY(-1px); background: #fff; }
+  .hero-note {
+    position: absolute; inset-inline: 0; bottom: 3.4rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.5);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+    padding-inline: 1.5rem;
+  }
+  .scroll-hint {
+    position: absolute; left: 50%; bottom: 1.1rem; transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    animation: hint 2.4s ease-in-out infinite;
+  }
+  @keyframes hint {
+    0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
+    50% { transform: translate(-50%, 8px); opacity: 1; }
+  }
+
+  /* ---------- Story (sticky phone scrollytelling) ---------- */
+  .story { position: relative; }
+  .js .story { height: calc(var(--steps) * 92svh + 100svh); }
+  .story-sticky { position: relative; }
+  .js .story-sticky {
+    position: sticky; top: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .phone-stage { display: none; }
+  .js .phone-stage {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    pointer-events: none;
+  }
+  .phone {
+    position: relative;
+    width: min(58vw, 300px);
+    aspect-ratio: 9 / 19.4;
+    background: #000;
+    overflow: hidden;
+    pointer-events: auto;
+    touch-action: none;
+    transform: translate(var(--px, 0), var(--py, 0)) rotate(var(--prot, 0deg)) scale(var(--pscale, 1));
+    will-change: transform;
+    box-shadow:
+      0 0 0 3px #2c2c2c,
+      0 0 0 7px #101010,
+      0 40px 90px rgba(0, 0, 0, 0.75);
+  }
+  .phone canvas, .phone .shot-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: opacity 900ms ease-in-out;
+  }
+  /* device chrome */
+  .phone.ios { border-radius: 52px; }
+  .phone.ios::before { /* dynamic island */
+    content: ""; position: absolute; top: 13px; left: 50%; transform: translateX(-50%);
+    width: 32%; height: 25px;
+    background: #000;
+    border-radius: 999px;
+    z-index: 3;
+  }
+  .phone.ios::after { /* home indicator */
+    content: ""; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 38%; height: 5px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 999px;
+    z-index: 3;
+    mix-blend-mode: overlay;
+  }
+  .phone.android { border-radius: 34px; }
+  .phone.android::before { /* punch-hole camera */
+    content: ""; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 13px; height: 13px;
+    background: #000;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 3px #000, inset 0 0 5px 3px #1c2733;
+    z-index: 3;
+  }
+  .phone.android::after { /* gesture bar */
+    content: ""; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+    width: 30%; height: 4px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 999px;
+    z-index: 3;
+    mix-blend-mode: overlay;
+  }
+  .phone .glare {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(115deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.025) 30%, rgba(255,255,255,0) 55%);
+    pointer-events: none;
+  }
+
+  /* step copy */
+  .step {
+    position: relative;
+    width: min(88%, 30rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+  .js .step {
+    position: absolute;
+    top: 50%;
+    padding-block: 0;
+    opacity: 0;
+    transform: translateY(24px);
+    will-change: opacity, transform;
+  }
+  .js .step[data-align="left"]  { left: clamp(1.5rem, 7vw, 8rem); }
+  .js .step[data-align="right"] { right: clamp(1.5rem, 7vw, 8rem); text-align: left; }
+  .js .step[data-align="center"] { left: 50%; text-align: center; --cx: -50%; }
+  .step .kicker {
+    display: block;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--accent);
+    margin-block-end: 0.9rem;
+    transition: color 700ms ease;
+  }
+  .step h2 {
+    font-size: clamp(1.8rem, 1.2rem + 2.8vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin-block-end: 1rem;
+  }
+  .step p { color: var(--text-dim); max-width: 26rem; text-wrap: pretty; }
+  .step[data-align="center"] p { margin-inline: auto; }
+  .step .fine {
+    margin-block-start: 1.1rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.42);
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  .step .names { color: var(--text); font-weight: 600; }
+  .gesture-lines { list-style: none; margin-block-start: 0.4rem; }
+  .gesture-lines li {
+    display: flex; align-items: baseline; gap: 0.8rem;
+    padding-block: 0.42rem;
+    color: var(--text-dim);
+  }
+  .gesture-lines .dir {
+    color: var(--accent);
+    font-weight: 800;
+    width: 1.4rem;
+    flex: none;
+    transition: color 700ms ease;
+  }
+  .gesture-lines .what { color: var(--text); font-weight: 600; }
+
+  /* Mobile: copy sits at the bottom, phone floats above */
+  @media (max-width: 47.9375rem) {
+    .js .phone-stage { align-items: start; padding-top: 7svh; }
+    .js .phone { width: min(46vw, 210px); }
+    .js .step, .js .step[data-align] {
+      left: 50%; right: auto;
+      top: auto; bottom: 4.5svh;
+      --cx: -50%;
+      text-align: center;
+      width: min(90%, 26rem);
+    }
+    .js .step p { margin-inline: auto; }
+    .js .step .gesture-lines { display: inline-block; text-align: start; }
+  }
+
+  /* ---------- Ending / download ---------- */
+  .download {
+    position: relative;
+    min-height: 90svh;
+    display: grid; place-items: center;
+    text-align: center;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: 6rem;
+  }
+  .download .dl-canvas { position: absolute; inset: 0; z-index: -2; opacity: 0.55; }
+  .download .dl-canvas canvas { width: 100%; height: 100%; position: absolute; inset: 0; }
+  .download .dl-scrim {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.35) 35%, rgba(10,10,10,0.55) 100%);
+  }
+  .download h2 {
+    font-size: clamp(2.2rem, 1.4rem + 4.5vw, 4.2rem);
+    font-weight: 800; letter-spacing: -0.02em; line-height: 1.08;
+    text-wrap: balance;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.8);
+  }
+  .download .sub { margin: 1.2rem auto 2.6rem; color: #d6d6d6; max-width: 30rem; text-shadow: 0 1px 10px rgba(0,0,0,0.8); }
+  .badges { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+  .store-badge {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    min-height: 56px;
+    padding: 0.55rem 1.4rem;
+    border-radius: 16px;
+    text-decoration: none;
+    background: rgba(255,255,255,0.93);
+    color: #111;
+    transition: transform 150ms ease-out, background 150ms ease-out;
+  }
+  .store-badge:hover, .store-badge:focus-visible { transform: translateY(-2px); background: #fff; }
+  .store-badge .lines { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+  .store-badge .small { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; opacity: 0.65; }
+  .store-badge .big { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+  .store-badge.soon {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+    border: 1px dashed rgba(255,255,255,0.28);
+    cursor: default;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .store-badge.soon:hover { transform: none; background: rgba(255,255,255,0.06); }
+  .premium-note { margin-block-start: 1.8rem; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-shadow: 0 1px 8px rgba(0,0,0,0.8); }
+
+  /* ---------- Screenshots ---------- */
+  .shots-section { padding: clamp(4rem, 8vw, 7rem) 1.5rem; text-align: center; }
+  .shots-section h2 {
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    margin-block-end: clamp(2rem, 5vw, 3.5rem);
+  }
+  .shots { display: flex; flex-wrap: wrap; gap: 1.8rem; justify-content: center; }
+  .shot { text-align: center; }
+  .shot .frame {
+    display: block;
+    width: min(60vw, 210px);
+    aspect-ratio: 9 / 19.4;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #101010;
+    box-shadow: 0 0 0 2px #262626, 0 0 0 5px #0e0e0e, 0 24px 50px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot.missing img { display: none; }
+  .shot.missing .frame::after {
+    content: "Screenshot\A coming soon";
+    white-space: pre;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    border: 1.5px dashed rgba(255,255,255,0.18);
+    border-radius: 22px;
+    position: absolute; inset: 12px;
+    display: grid; place-items: center;
+  }
+  .shot figcaption { margin-block-start: 0.9rem; color: var(--text-dim); font-size: 0.9rem; }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 2.2rem clamp(1.2rem, 4vw, 2.5rem) 2.6rem;
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
+  }
+  .site-footer nav { display: flex; gap: 1.4rem; }
+  .site-footer a { color: var(--text-dim); }
+  .site-footer a:hover, .site-footer a:focus-visible { color: var(--text); }
+  .footer-brand { font-family: var(--wordmark); font-size: 1.15rem; color: var(--text); }
+  .footer-meaning { width: 100%; font-size: 0.8rem; opacity: 0.7; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+<a href="#download" class="skip-link">Skip to download</a>
+
+<nav class="site-nav" aria-label="Main">
+  <a href="#top" class="brand">Tapet</a>
+  <a class="nav-cta" href="#download">Get Tapet</a>
+</nav>
+
+<main id="top">
+
+  <!-- ============ Hero ============ -->
+  <header class="hero">
+    <div class="hero-canvas" aria-hidden="true">
+      <canvas id="hero-a"></canvas>
+      <canvas id="hero-b"></canvas>
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <h1>No two are<br>ever alike.</h1>
+      <p class="sub">Tapet doesn&rsquo;t download wallpapers &mdash; it creates them. On your phone. At your exact resolution. Forever.</p>
+      <div class="hero-actions">
+        <a class="btn-solid" href="#download">Get Tapet</a>
+        <button class="btn-ghost" id="hero-generate" type="button">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+          Generate
+        </button>
+      </div>
+    </div>
+    <p class="hero-note">This background is being generated live in your browser &mdash; a small taste of what Tapet does on your phone, at 4K.</p>
+    <span class="scroll-hint" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+  </header>
+
+  <!-- ============ Story ============ -->
+  <section class="story" id="story" style="--steps: 6;" aria-label="What Tapet does">
+    <div class="story-sticky">
+      <div class="phone-stage" aria-hidden="true">
+        <div class="phone" id="phone">
+          <canvas id="phone-a"></canvas>
+          <canvas id="phone-b"></canvas>
+          <img class="shot-img" id="phone-shot" alt="" hidden>
+          <span class="glare"></span>
+        </div>
+      </div>
+
+      <article class="step" data-step="0" data-align="left">
+        <span class="kicker">Created, not downloaded</span>
+        <h2>Every wallpaper is a first edition.</h2>
+        <p>Each one is a one-of-a-kind abstract pattern, generated on-device the moment you ask for it. It has never existed before, and it will never exist again &mdash; unless you keep it.</p>
+        <p class="fine" aria-hidden="true">№ <span id="edition">0000001</span> of ∞</p>
+      </article>
+
+      <article class="step" data-step="1" data-align="right">
+        <span class="kicker">110+ patterns</span>
+        <h2>A hundred and ten ways to be unrepeatable.</h2>
+        <p>Hand-crafted generative designs, each with a name and a personality &mdash; <span class="names" id="pattern-names">Serengeti, Havana, Antares</span> &mdash; and each an infinite family of wallpapers. 60+ of them are free.</p>
+      </article>
+
+      <article class="step" data-step="2" data-align="left">
+        <span class="kicker">14 styles &middot; 1000+ palettes</span>
+        <h2>Any color, as long as it&rsquo;s yours.</h2>
+        <p>Neon, Pastel, Cozy, Monochrome&hellip; handpicked palettes paint every pattern &mdash; or build your own from a photo, or straight from your camera. Watch this page repaint itself with each one.</p>
+      </article>
+
+      <article class="step" data-step="3" data-align="right">
+        <span class="kicker">Gesture-driven</span>
+        <h2>A swipe away from something new.</h2>
+        <ul class="gesture-lines">
+          <li><span class="dir" aria-hidden="true">&uarr;</span><span><span class="what">Swipe up</span> &mdash; new wallpaper</span></li>
+          <li><span class="dir" aria-hidden="true">&darr;</span><span><span class="what">Swipe down</span> &mdash; back to the previous one</span></li>
+          <li><span class="dir" aria-hidden="true">&larr;</span><span><span class="what">Swipe left</span> &mdash; new pattern, keep the colors</span></li>
+          <li><span class="dir" aria-hidden="true">&rarr;</span><span><span class="what">Swipe right</span> &mdash; new colors, keep the pattern</span></li>
+        </ul>
+      </article>
+
+      <article class="step" data-step="4" data-align="left">
+        <span class="kicker">On autopilot</span>
+        <h2>Fresh by morning. Or every fifteen minutes.</h2>
+        <p>The automatic changer delivers a new wallpaper on your rhythm &mdash; different ones for lock and home screen. Blur, vignette, and a dark mode that follows the ambient light around you. Your AMOLED screen will approve.</p>
+      </article>
+
+      <article class="step" data-step="5" data-align="right">
+        <span class="kicker">Private by design</span>
+        <h2>Beautiful, even in airplane mode.</h2>
+        <p>Nothing is downloaded, uploaded, or tracked. Zero servers involved. No ads. Save at 4K and beyond. Premium is a one-time purchase &mdash; no subscriptions, ever.</p>
+        <p class="fine">0 servers &middot; 0 ads &middot; 0 subscriptions</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ Download ============ -->
+  <section class="download" id="download" aria-labelledby="dl-title">
+    <div class="dl-canvas" aria-hidden="true"><canvas id="dl-c"></canvas></div>
+    <div class="dl-scrim" aria-hidden="true"></div>
+    <div>
+      <h2 id="dl-title">Your next wallpaper<br>doesn&rsquo;t exist yet.</h2>
+      <p class="sub">Generate it.</p>
+      <div class="badges">
+        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet">
+          <svg width="26" height="28" viewBox="0 0 24 26" aria-hidden="true"><path fill="#01875f" d="M2.6.9C2 1.3 1.6 2 1.6 2.9v20.2c0 .9.4 1.6 1 2l11.7-12.1L2.6.9z"/><path fill="#ffbc00" d="M18.2 9.1 4.6.4c-.6-.4-1.4-.4-2 0l11.7 12.6 3.9-3.9z"/><path fill="#f13d3d" d="m18.2 16.9-3.9-3.9L2.6 25.1c.6.4 1.4.4 2-.1l13.6-8.1z"/><path fill="#31a8ff" d="m22.4 11.6-4.2-2.5-4.2 3.9 4.2 3.9 4.2-2.5c1.2-.7 1.2-2.1 0-2.8z"/></svg>
+          <span class="lines"><span class="small">Get it on</span><span class="big">Google Play</span></span>
+        </a>
+        <span class="store-badge soon" role="note" aria-label="Coming soon to the iPhone App Store">
+          <span class="lines"><span class="small">Coming soon to the</span><span class="big">App&nbsp;Store</span></span>
+        </span>
+      </div>
+      <p class="premium-note">Free with 60+ patterns &middot; Premium is a one-time purchase, no subscriptions</p>
+    </div>
+  </section>
+
+  <!-- ============ Screenshots ============ -->
+  <section class="shots-section" aria-labelledby="shots-title">
+    <h2 id="shots-title">See it on a real phone.</h2>
+    <div class="shots">
+      <figure class="shot">
+        <span class="frame"><img src="assets/screenshots/screen-1.png" alt="Tapet showing a generated abstract wallpaper" width="210" height="453" loading="lazy" onerror="this.closest('.shot').classList.add('missing')"></span>
+        <figcaption>Swipe through infinite wallpapers</figcaption>
+      </figure>
+      <figure class="shot">
+        <span class="frame"><img src="assets/screenshots/screen-2.png" alt="Tapet pattern browser with dozens of pattern previews" width="210" height="453" loading="lazy" onerror="this.closest('.shot').classList.add('missing')"></span>
+        <figcaption>Browse 110+ patterns</figcaption>
+      </figure>
+      <figure class="shot">
+        <span class="frame"><img src="assets/screenshots/screen-3.png" alt="Tapet color styles and palette picker" width="210" height="453" loading="lazy" onerror="this.closest('.shot').classList.add('missing')"></span>
+        <figcaption>Pick styles &amp; build palettes</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <span class="footer-brand">Tapet</span>
+  <nav aria-label="Footer">
+    <a href="tapet_privacy_policy.html">Privacy policy</a>
+    <a href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet">Google Play</a>
+  </nav>
+  <span>&copy; 2026 Tapet LLC</span>
+  <span class="footer-meaning">&ldquo;Tapet&rdquo; means <em>wallpaper</em> in the Scandinavian languages.</span>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  document.documentElement.classList.add("js");
+
+  /* ---------- Seeded RNG ---------- */
+  const mulberry32 = (seed) => {
+    let a = seed >>> 0;
+    return () => {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  };
+  let seedCounter = Math.floor(Math.random() * 1e9);
+  const newSeed = () => (seedCounter = (seedCounter + 0x9E3779B9) >>> 0);
+  const pick = (rng, arr) => arr[Math.floor(rng() * arr.length)];
+
+  /* ---------- Styles & palettes ---------- */
+  const STYLES = {
+    Neon:       { bg: "#0b0b12", colors: ["#ff2975", "#00f0ff", "#c6ff00", "#ff6b00", "#8a2be2"] },
+    Pastel:     { bg: "#221d29", colors: ["#ffd6e0", "#c1e7e3", "#fdf1c9", "#d7c1e7", "#bde0fe"] },
+    Cozy:       { bg: "#171310", colors: ["#d4a373", "#a98467", "#6c584c", "#e6ccb2", "#b08968"] },
+    Spring:     { bg: "#10160f", colors: ["#80b918", "#55a630", "#2b9348", "#ffff3f", "#bfd200"] },
+    Monochrome: { bg: "#101010", colors: ["#e8e8e8", "#bdbdbd", "#8a8a8a", "#5c5c5c", "#333333"] },
+    Autumn:     { bg: "#140e08", colors: ["#e76f51", "#f4a261", "#e9c46a", "#bc6c25", "#8a5a44"] },
+    Winter:     { bg: "#0b1220", colors: ["#a8dadc", "#457b9d", "#1d3557", "#e0fbfc", "#98c1d9"] },
+    Summer:     { bg: "#0f1a1c", colors: ["#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff"] },
+    Vibrant:    { bg: "#12081f", colors: ["#f72585", "#b5179e", "#7209b7", "#4361ee", "#4cc9f0"] },
+    Ocean:      { bg: "#03121f", colors: ["#0077b6", "#00b4d8", "#90e0ef", "#caf0f8", "#023e8a"] },
+    Candy:      { bg: "#1c0f16", colors: ["#ff99c8", "#fcf6bd", "#d0f4de", "#a9def9", "#e4c1f9"] },
+    Dark:       { bg: "#07090d", colors: ["#141821", "#1c2431", "#26303f", "#31445c", "#3d5a80"] },
+  };
+  const STYLE_NAMES = Object.keys(STYLES);
+  const randomStyle = () => STYLES[STYLE_NAMES[Math.floor(Math.random() * STYLE_NAMES.length)]];
+  const shade = (hex, f) => {
+    const n = parseInt(hex.slice(1), 16);
+    const ch = (s) => Math.max(0, Math.min(255, Math.round(((n >> s) & 255) * f)));
+    return `rgb(${ch(16)},${ch(8)},${ch(0)})`;
+  };
+  const relum = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    return 0.2126 * ((n >> 16) & 255) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255);
+  };
+
+  /* ---------- Renderers (browser sketches of Tapet-style patterns) ---------- */
+  function rTriangles(ctx, w, h, pal, rng) {
+    const rows = 4 + Math.floor(rng() * 5);
+    const rh = h / rows;
+    for (let r = 0; r <= rows; r++) {
+      let x = -rng() * rh;
+      const y = r * rh;
+      while (x < w) {
+        const bw = rh * (0.6 + rng() * 1.4);
+        const c = pick(rng, pal.colors);
+        ctx.globalAlpha = 0.55 + rng() * 0.45;
+        ctx.fillStyle = rng() < 0.5 ? c : shade(c, 0.55 + rng() * 0.6);
+        ctx.beginPath();
+        if (rng() < 0.5) { ctx.moveTo(x, y); ctx.lineTo(x + bw, y); ctx.lineTo(x, y + rh); }
+        else { ctx.moveTo(x + bw, y); ctx.lineTo(x + bw, y + rh); ctx.lineTo(x, y + rh); }
+        ctx.closePath(); ctx.fill();
+        x += bw * (0.4 + rng() * 0.6);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function rCircles(ctx, w, h, pal, rng) {
+    const n = 26 + Math.floor(rng() * 30);
+    for (let i = 0; i < n; i++) {
+      ctx.globalAlpha = 0.14 + rng() * 0.4;
+      ctx.fillStyle = pick(rng, pal.colors);
+      ctx.beginPath();
+      ctx.arc(rng() * w, rng() * h, (0.05 + rng() * 0.28) * Math.max(w, h), 0, Math.PI * 2);
+      ctx.fill();
+      if (rng() < 0.35) {
+        ctx.globalAlpha = 0.5;
+        ctx.strokeStyle = pick(rng, pal.colors);
+        ctx.lineWidth = 1 + rng() * 3;
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function rStripes(ctx, w, h, pal, rng) {
+    const diag = Math.hypot(w, h);
+    ctx.save();
+    ctx.translate(w / 2, h / 2);
+    ctx.rotate((rng() - 0.5) * Math.PI * 0.7);
+    let x = -diag / 2;
+    while (x < diag / 2) {
+      const bw = diag * (0.015 + rng() * 0.09);
+      ctx.globalAlpha = 0.5 + rng() * 0.5;
+      ctx.fillStyle = pick(rng, pal.colors);
+      ctx.fillRect(x, -diag / 2, bw, diag);
+      x += bw + diag * rng() * 0.05;
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+  function rSplatter(ctx, w, h, pal, rng) {
+    const clusters = 5 + Math.floor(rng() * 5);
+    for (let c = 0; c < clusters; c++) {
+      const cx = rng() * w, cy = rng() * h;
+      const col = pick(rng, pal.colors);
+      const n = 24 + Math.floor(rng() * 40);
+      for (let i = 0; i < n; i++) {
+        const d = rng() * rng() * Math.max(w, h) * 0.22;
+        const a = rng() * Math.PI * 2;
+        ctx.globalAlpha = 0.35 + rng() * 0.6;
+        ctx.fillStyle = rng() < 0.8 ? col : pick(rng, pal.colors);
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 0.5 + rng() * rng() * 14, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function rConcentric(ctx, w, h, pal, rng) {
+    const cx = rng() < 0.5 ? 0 : w, cy = rng() < 0.5 ? 0 : h;
+    let r = Math.hypot(w, h);
+    while (r > 8) {
+      ctx.globalAlpha = 0.7 + rng() * 0.3;
+      ctx.fillStyle = pick(rng, pal.colors);
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+      r *= 0.72 + rng() * 0.16;
+    }
+    ctx.globalAlpha = 1;
+  }
+  function rShards(ctx, w, h, pal, rng) {
+    const n = 10 + Math.floor(rng() * 12);
+    for (let i = 0; i < n; i++) {
+      const cx = rng() * w, cy = rng() * h;
+      const size = (0.15 + rng() * 0.4) * Math.max(w, h);
+      const sides = 3 + Math.floor(rng() * 3);
+      const rot = rng() * Math.PI * 2;
+      ctx.globalAlpha = 0.2 + rng() * 0.5;
+      ctx.fillStyle = pick(rng, pal.colors);
+      ctx.beginPath();
+      for (let s = 0; s < sides; s++) {
+        const a = rot + (s / sides) * Math.PI * 2;
+        const rr = size * (0.5 + rng() * 0.5);
+        s === 0 ? ctx.moveTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr)
+                : ctx.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr);
+      }
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  function rWaves(ctx, w, h, pal, rng) {
+    const layers = 5 + Math.floor(rng() * 5);
+    for (let l = 0; l < layers; l++) {
+      const baseY = h * (0.15 + (l / layers) * 0.95);
+      const amp = h * (0.04 + rng() * 0.12);
+      const freq = 1 + rng() * 3;
+      const phase = rng() * Math.PI * 2;
+      ctx.globalAlpha = 0.75 + rng() * 0.25;
+      ctx.fillStyle = pick(rng, pal.colors);
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for (let x = 0; x <= w; x += 6) {
+        ctx.lineTo(x, baseY + Math.sin((x / w) * Math.PI * 2 * freq + phase) * amp);
+      }
+      ctx.lineTo(w, h);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  function rDots(ctx, w, h, pal, rng) {
+    const cell = Math.max(w, h) * (0.045 + rng() * 0.05);
+    const fx = rng() * w, fy = rng() * h;
+    const maxD = Math.hypot(w, h);
+    for (let y = cell / 2; y < h + cell; y += cell) {
+      for (let x = cell / 2; x < w + cell; x += cell) {
+        const d = Math.hypot(x - fx, y - fy) / maxD;
+        ctx.globalAlpha = 0.55 + rng() * 0.45;
+        ctx.fillStyle = pick(rng, pal.colors);
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(0.6, (1 - d) * cell * 0.5 * (0.6 + rng() * 0.5)), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  const RENDERERS = [rTriangles, rCircles, rStripes, rSplatter, rConcentric, rShards, rWaves, rDots];
+
+  /* ---------- Painting ---------- */
+  function paint(canvas, spec) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cw = canvas.clientWidth || canvas.parentElement.clientWidth || 300;
+    const chh = canvas.clientHeight || canvas.parentElement.clientHeight || 300;
+    canvas.width = Math.max(1, Math.round(cw * dpr));
+    canvas.height = Math.max(1, Math.round(chh * dpr));
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const rng = mulberry32(spec.seed);
+    const pal = spec.style || STYLES[STYLE_NAMES[Math.floor(rng() * STYLE_NAMES.length)]];
+    const renderer = RENDERERS[spec.rendererIndex != null ? spec.rendererIndex : Math.floor(rng() * RENDERERS.length)];
+    const w = cw, h = chh;
+    ctx.fillStyle = pal.bg;
+    ctx.fillRect(0, 0, w, h);
+    renderer(ctx, w, h, pal, rng);
+    const vg = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.hypot(w, h) * 0.62);
+    vg.addColorStop(0, "rgba(0,0,0,0)");
+    vg.addColorStop(1, "rgba(0,0,0,0.4)");
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, w, h);
+    return pal;
+  }
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Device detection: iPhone vs Android frame ---------- */
+  const ua = navigator.userAgent;
+  const isApple = /iPhone|iPad|iPod|Macintosh/.test(ua) && !/Android/.test(ua);
+  const phone = document.getElementById("phone");
+  phone.classList.add(isApple ? "ios" : "android");
+
+  /* ---------- Hero: infinite wall ---------- */
+  const heroA = document.getElementById("hero-a");
+  const heroB = document.getElementById("hero-b");
+  let heroFront = heroA, heroBack = heroB;
+  let heroSpec = { seed: newSeed() };
+  paint(heroFront, heroSpec);
+  heroBack.style.opacity = "0";
+  function heroNext() {
+    heroSpec = { seed: newSeed() };
+    paint(heroBack, heroSpec);
+    heroBack.style.opacity = "1";
+    heroFront.style.opacity = "0";
+    [heroFront, heroBack] = [heroBack, heroFront];
+  }
+  let heroVisible = true;
+  if (!reducedMotion) {
+    setInterval(() => { if (heroVisible && !document.hidden) heroNext(); }, 8000);
+  }
+  new IntersectionObserver((e) => { heroVisible = e[0].isIntersecting; }).observe(document.querySelector(".hero"));
+  document.getElementById("hero-generate").addEventListener("click", heroNext);
+
+  /* ---------- Phone screen (crossfading canvases + optional screenshots) ---------- */
+  const phoneA = document.getElementById("phone-a");
+  const phoneB = document.getElementById("phone-b");
+  const phoneShot = document.getElementById("phone-shot");
+  let phoneFront = phoneA, phoneBack = phoneB;
+  let phoneSpec = { seed: newSeed(), rendererIndex: 0, style: STYLES.Neon };
+  requestAnimationFrame(() => { paint(phoneFront, phoneSpec); phoneBack.style.opacity = "0"; });
+
+  function phoneShow(spec) {
+    phoneSpec = spec;
+    paint(phoneBack, spec);
+    phoneBack.style.opacity = "1";
+    phoneFront.style.opacity = "0";
+    [phoneFront, phoneBack] = [phoneBack, phoneFront];
+  }
+
+  // Screenshot overrides: drop assets/screenshots/step-0.png … step-5.png to
+  // replace the generated art inside the phone for that story step.
+  const stepShots = [];
+  for (let i = 0; i < 6; i++) {
+    const img = new Image();
+    img.src = `assets/screenshots/step-${i}.png`;
+    img.onload = () => { stepShots[i] = img.src; };
+    img.onerror = () => { stepShots[i] = null; };
+  }
+
+  /* ---------- Story scroll engine ---------- */
+  const story = document.getElementById("story");
+  const steps = [...document.querySelectorAll(".step")];
+  const N = steps.length;
+
+  // Per-step phone pose: x (vw), rot (deg), scale — mirrored against copy side.
+  const POSES = [
+    { x:  16, rot:  -5, scale: 1.00 },
+    { x: -17, rot:   6, scale: 0.95 },
+    { x:  17, rot:  -7, scale: 0.97 },
+    { x: -16, rot:   5, scale: 1.02 },
+    { x:  17, rot:  -6, scale: 0.95 },
+    { x: -16, rot:   4, scale: 0.98 },
+  ];
+  // Wallpaper mood per step.
+  const STEP_SPECS = [
+    () => ({ seed: newSeed(), rendererIndex: 5, style: STYLES.Vibrant }),
+    () => ({ seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: phoneSpec.style }),
+    () => ({ seed: newSeed(), rendererIndex: phoneSpec.rendererIndex, style: randomStyle() }),
+    () => ({ seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: randomStyle() }),
+    () => ({ seed: newSeed(), rendererIndex: 6, style: STYLES.Dark }),
+    () => ({ seed: newSeed(), rendererIndex: 7, style: STYLES.Dark }),
+  ];
+
+  const isMobile = () => window.matchMedia("(max-width: 47.9375rem)").matches;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const ease = (t) => t * t * (3 - 2 * t);
+
+  let cur = { x: POSES[0].x, rot: POSES[0].rot, scale: POSES[0].scale };
+  let activeStep = -1;
+  let storyVisible = false;
+  let rafId = null;
+
+  function setAccent(style) {
+    const brightest = [...style.colors].sort((a, b) => relum(b) - relum(a))[0];
+    document.documentElement.style.setProperty("--accent", brightest);
+  }
+
+  function enterStep(i) {
+    if (i === activeStep) return;
+    activeStep = i;
+    const spec = STEP_SPECS[i]();
+    if (stepShots[i]) {
+      phoneShot.src = stepShots[i];
+      phoneShot.hidden = false;
+      phoneShot.style.opacity = "1";
+    } else {
+      phoneShot.style.opacity = "0";
+      phoneShow(spec);
+      setAccent(spec.style);
+    }
+    if (i === 0) {
+      const ed = document.getElementById("edition");
+      ed.textContent = String(1 + Math.floor(Math.random() * 8999999)).padStart(7, "0");
+    }
+    if (i === 1) cycleNames();
+  }
+
+  // Step 1: pattern-name ticker
+  const NAME_POOL = ["Serengeti", "Havana", "Miami", "Nassau", "Balinese", "Siamese",
+                     "Chartreux", "Aleppo", "Lantana", "Splatter", "Cereus", "Vindaloo",
+                     "Marjoram", "Opuntia", "Antares"];
+  const namesEl = document.getElementById("pattern-names");
+  let nameTimer = null;
+  function cycleNames() {
+    if (nameTimer || reducedMotion) return;
+    nameTimer = setInterval(() => {
+      if (activeStep !== 1 || document.hidden) return;
+      const shuffled = [...NAME_POOL].sort(() => Math.random() - 0.5).slice(0, 3);
+      namesEl.textContent = shuffled.join(", ");
+    }, 1800);
+  }
+
+  // Step 2: palette cycling while active
+  if (!reducedMotion) {
+    setInterval(() => {
+      if (activeStep !== 2 || document.hidden || !storyVisible) return;
+      const spec = { seed: newSeed(), rendererIndex: phoneSpec.rendererIndex, style: randomStyle() };
+      phoneShow(spec);
+      setAccent(spec.style);
+    }, 2200);
+    // Step 3: auto-demo gestures (subtle) while active
+    setInterval(() => {
+      if (activeStep !== 3 || document.hidden || !storyVisible) return;
+      phoneShow(STEP_SPECS[3]());
+    }, 2600);
+  }
+
+  function storyProgress() {
+    const rect = story.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const scrolled = -rect.top;
+    const total = rect.height - vh;
+    return clamp(scrolled / total, 0, 1) * (N - 1 + 0.999);
+  }
+
+  function frame() {
+    const p = clamp(storyProgress(), 0, N - 1);
+    const i = clamp(Math.floor(p), 0, N - 1);
+    const frac = ease(clamp(p - i, 0, 1));
+    const a = POSES[i], b = POSES[Math.min(i + 1, N - 1)];
+    const mobile = isMobile();
+    const target = {
+      x: mobile ? 0 : lerp(a.x, b.x, frac),
+      rot: lerp(a.rot, b.rot, frac) * (mobile ? 0.5 : 1),
+      scale: lerp(a.scale, b.scale, frac),
+    };
+    const s = reducedMotion ? 1 : 0.14;
+    cur.x = lerp(cur.x, target.x, s);
+    cur.rot = lerp(cur.rot, target.rot, s);
+    cur.scale = lerp(cur.scale, target.scale, s);
+    phone.style.setProperty("--px", cur.x.toFixed(3) + "vw");
+    phone.style.setProperty("--prot", cur.rot.toFixed(3) + "deg");
+    phone.style.setProperty("--pscale", cur.scale.toFixed(4));
+    // gentle float
+    if (!reducedMotion) {
+      phone.style.setProperty("--py", (Math.sin(performance.now() / 1600) * 6).toFixed(2) + "px");
+    }
+    // copy opacity
+    const round = Math.round(p);
+    steps.forEach((st, idx) => {
+      const d = Math.abs(p - idx);
+      const o = clamp(1 - d * 1.7, 0, 1);
+      st.style.opacity = o.toFixed(3);
+      st.style.transform = `translate(var(--cx, 0), calc(-50% + ${((idx - p) * -30).toFixed(1)}px))`;
+      st.style.pointerEvents = o > 0.5 ? "auto" : "none";
+    });
+    enterStep(round);
+    rafId = storyVisible ? requestAnimationFrame(frame) : null;
+  }
+
+  new IntersectionObserver((entries) => {
+    storyVisible = entries[0].isIntersecting;
+    if (storyVisible && rafId === null) rafId = requestAnimationFrame(frame);
+  }, { rootMargin: "10% 0px" }).observe(story);
+
+  /* Swiping the story phone generates new wallpapers, like the app */
+  let swipeStart = null;
+  phone.addEventListener("pointerdown", (e) => { swipeStart = { x: e.clientX, y: e.clientY }; });
+  phone.addEventListener("pointerup", (e) => {
+    if (!swipeStart) return;
+    const dx = e.clientX - swipeStart.x, dy = e.clientY - swipeStart.y;
+    swipeStart = null;
+    let spec;
+    if (Math.hypot(dx, dy) < 24 || Math.abs(dy) >= Math.abs(dx)) {
+      spec = { seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: randomStyle() };
+    } else if (dx < 0) {
+      spec = { seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: phoneSpec.style };
+    } else {
+      spec = { seed: newSeed(), rendererIndex: phoneSpec.rendererIndex, style: randomStyle() };
+    }
+    phoneShot.style.opacity = "0";
+    phoneShow(spec);
+    setAccent(spec.style);
+  });
+
+  /* ---------- Download background ---------- */
+  const dlCanvas = document.getElementById("dl-c");
+  const dlSpec = { seed: newSeed(), rendererIndex: 3, style: STYLES.Vibrant };
+  const dlSection = document.querySelector(".download");
+  new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) paint(dlCanvas, dlSpec);
+  }).observe(dlSection);
+
+  /* ---------- Resize ---------- */
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      paint(heroFront, heroSpec);
+      paint(phoneFront, phoneSpec);
+      paint(dlCanvas, dlSpec);
+    }, 200);
+  });
+})();
+</script>
+</body>
+</html>
