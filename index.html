@@ -527,13 +527,11 @@
   var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5bHR4eXNjc2lqc2lqb3ZpZ2p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4ODMxMTgsImV4cCI6MjA4ODQ1OTExOH0.KAXduQAWpsPTaa5KXoufZjpsDOfaw0pqYEo8EUMxpZc";
   var screens = Array.prototype.slice.call(document.querySelectorAll(".stage .screen"));
   if (!window.fetch) return;
-  fetch(SUPA + "/rest/v1/showcase_wallpapers?select=image_path,collection&published=eq.true&order=created_at.desc&limit=80", { headers: { apikey: KEY } })
+  fetch(SUPA + "/rest/v1/showcase_wallpapers?select=image_path&collection=eq.showcase&published=eq.true&order=created_at.desc&limit=80", { headers: { apikey: KEY } })
     .then(function (r) { return r.ok ? r.json() : []; })
     .then(function (rows) {
-      var phoneUrls = [];
-      rows.forEach(function (r) {
-        if (r.collection === "blur") return;
-        phoneUrls.push(SUPA + "/storage/v1/object/public/showcase/" + r.image_path);
+      var phoneUrls = rows.map(function (r) {
+        return SUPA + "/storage/v1/object/public/showcase/" + r.image_path;
       });
 
       // ---- phone slideshows ----
