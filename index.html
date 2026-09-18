@@ -1,19 +1,22 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!doctype html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
-<meta name="description" content="Tapet doesn't download wallpapers — it creates them. One-of-a-kind abstract wallpapers, generated on your phone at your exact resolution. 110+ patterns, 1000+ palettes, fully offline, no ads.">
-<meta property="og:title" content="Tapet — Wallpapers, born on your phone">
-<meta property="og:description" content="Tapet doesn't download wallpapers — it creates them. Infinite one-of-a-kind abstract wallpapers, generated on-device, fully offline.">
+<title>Tapet: Free endless wallpapers at your fingertips</title>
+<meta name="description" content="Tapet generates one-of-a-kind wallpapers right on your device. Endless patterns, countless palettes, fresh as often as you like. Offline, private, one-time purchase.">
+<meta property="og:title" content="Tapet: Free endless wallpapers at your fingertips">
+<meta property="og:description" content="Endless patterns, countless palettes, generated on your device. Offline, private, one-time purchase.">
 <meta property="og:url" content="https://tapet.app">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://tapet.app/">
+<meta name="color-scheme" content="dark light">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="icon" href="assets/icon-192.png" sizes="192x192" type="image/png">
-<title>Tapet — Wallpapers, born on your phone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js");</script>
 <style>
   @font-face {
     font-family: "Brunson";
@@ -21,994 +24,595 @@
     font-display: swap;
   }
   :root {
-    color-scheme: dark;
-    --bg: #0a0a0a;
-    --text: #ededed;
-    --text-dim: #9f9f9f;
-    --border: rgba(255, 255, 255, 0.1);
-    --accent: #4fd8c4;
-    --accent-ink: #071e1a;
-    --wordmark: "Brunson", "Arial Black", system-ui, sans-serif;
+    --night: #0d0d0e;
+    --night-2: #161617;
+    --snow: #f4f4f5;
+    --paper: #fafafa;
+    --ink: #1a1a1c;
+    --dim-dark: rgba(244, 244, 245, .62);
+    --dim-light: #77777c;
+    --ember: #d4d4d8;
+    --ember-soft: #ffffff;
+    --tile: #ececee;
+    --tile-ink: #3f3f46;
+    --line-dark: rgba(244, 244, 245, .14);
+    --line-light: rgba(26, 26, 28, .12);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  html, body { overflow-x: hidden; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.6;
-    overflow-x: clip;
+    background: var(--night);
+    color: var(--snow);
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  ::selection { background: var(--accent); color: var(--accent-ink); }
-  a { color: var(--accent); }
-  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
-    outline: 3px solid var(--accent);
+  ::selection { background: #52525b; color: #fff; }
+  a:focus-visible {
+    outline: 2px solid var(--ember);
     outline-offset: 3px;
-    border-radius: 6px;
-  }
-  .skip-link {
-    position: absolute; top: -100%; left: 0; z-index: 1000;
-    padding: 0.75rem 1.5rem; background: var(--accent); color: var(--accent-ink);
-    font-weight: 700; text-decoration: none;
-  }
-  .skip-link:focus { top: 0; }
-
-  /* ---------- Nav ---------- */
-  .site-nav {
-    position: fixed; inset-inline: 0; top: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.9rem clamp(1.2rem, 4vw, 2.5rem);
-    background: linear-gradient(to bottom, rgba(10,10,10,0.75), rgba(10,10,10,0));
-    pointer-events: none;
-  }
-  .site-nav > * { pointer-events: auto; }
-  .brand {
-    font-family: var(--wordmark);
-    font-size: 1.55rem;
-    color: #fff;
-    text-decoration: none;
-    line-height: 1;
-    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
-    padding-block: 0.4rem;
-  }
-  .nav-cta {
-    display: inline-flex; align-items: center;
-    min-height: 44px;
-    padding: 0.45rem 1.25rem;
     border-radius: 999px;
-    background: rgba(255,255,255,0.92);
-    color: #0a0a0a;
-    font-weight: 700; font-size: 0.95rem;
-    text-decoration: none;
-    transition: transform 150ms ease-out, background 150ms ease-out;
   }
-  .nav-cta:hover, .nav-cta:focus-visible { transform: translateY(-1px); background: #fff; }
 
-  /* ---------- Hero ---------- */
+  /* ---------- reveal ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .rv {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .js .rv.in { opacity: 1; transform: none; }
+  }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.15rem clamp(1.25rem, 5vw, 4rem);
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    font-family: "Brunson", "Arial Black", system-ui, sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: .02em;
+    color: var(--snow);
+    text-decoration: none;
+  }
+  .wordmark .logo {
+    width: 30px;
+    height: 30px;
+    flex: none;
+  }
+  .wordmark .script {
+    height: 34px;
+    width: auto;
+    color: var(--snow);
+    flex: none;
+  }
+  /* ---------- hero ---------- */
   .hero {
+    --phone-w: clamp(280px, 32vw, 420px);
     position: relative;
-    min-height: 100svh;
-    display: grid;
-    place-items: center;
-    isolation: isolate;
     overflow: hidden;
-  }
-  .hero-canvas { position: absolute; inset: 0; z-index: -2; }
-  .hero-canvas canvas {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    transition: opacity 1600ms ease-in-out;
-  }
-  .hero-scrim {
-    position: absolute; inset: 0; z-index: -1;
-    background:
-      radial-gradient(ellipse at 50% 55%, rgba(5,5,5,0.6) 0%, rgba(5,5,5,0.35) 55%, rgba(5,5,5,0.2) 100%),
-      linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0) 25%),
-      linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0) 30%);
-  }
-  .hero-inner { text-align: center; width: min(92%, 46rem); padding-block: 6rem; }
-  .hero h1 {
-    font-size: clamp(2.6rem, 1.4rem + 7vw, 5.6rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-    text-shadow: 0 2px 30px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.9);
-  }
-  .hero p.sub {
-    margin: 1.5rem auto 2.5rem;
-    max-width: 34rem;
-    font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
-    color: #e0e0e0;
-    text-shadow: 0 1px 14px rgba(0,0,0,0.9);
-    text-wrap: balance;
-  }
-  .hero-actions { display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; }
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 0.55rem;
-    min-height: 48px;
-    padding: 0.6rem 1.4rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.35);
-    background: rgba(10,10,10,0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #fff;
-    font: inherit; font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 150ms ease-out, background 150ms ease-out, border-color 150ms ease-out;
-  }
-  .btn-ghost:hover, .btn-ghost:focus-visible { transform: translateY(-1px); border-color: rgba(255,255,255,0.7); }
-  .btn-solid {
-    display: inline-flex; align-items: center; gap: 0.55rem;
-    min-height: 48px;
-    padding: 0.6rem 1.5rem;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.92);
-    color: #0a0a0a;
-    font-weight: 700;
-    text-decoration: none;
-    transition: transform 150ms ease-out, background 150ms ease-out;
-  }
-  .btn-solid:hover, .btn-solid:focus-visible { transform: translateY(-1px); background: #fff; }
-  .hero-note {
-    position: absolute; inset-inline: 0; bottom: 3.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.5);
-    text-shadow: 0 1px 6px rgba(0,0,0,0.9);
-    padding-inline: 1.5rem;
+    gap: clamp(3.5rem, 9vh, 6rem);
+    padding: clamp(5rem, 12vh, 7rem) clamp(1.25rem, 6vw, 5.5rem) clamp(3.5rem, 9vh, 6rem);
+    max-width: 78rem;
+    margin: 0 auto;
   }
-  .scroll-hint {
-    position: absolute; left: 50%; bottom: 1.1rem; transform: translateX(-50%);
-    color: rgba(255,255,255,0.6);
-    animation: hint 2.4s ease-in-out infinite;
+  .logo-mask {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* Fills the first viewport (minus the hero's top padding and gap) so the logo sits vertically centered. */
+    min-height: calc(100svh - clamp(5rem, 12vh, 7rem) - clamp(3.5rem, 9vh, 6rem));
   }
-  @keyframes hint {
-    0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
-    50% { transform: translate(-50%, 8px); opacity: 1; }
+  .logo-mask svg#tapet-script {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: min(80vw, 450px);
+    height: auto;
+    color: var(--snow);
+    filter: drop-shadow(0 0 18px rgba(0, 0, 0, 1)) drop-shadow(0 14px 34px rgba(0, 0, 0, .95)) drop-shadow(0 44px 90px rgba(0, 0, 0, .75));
+  }
+  .logo-mask svg.logo-bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: calc(min(80vw, 450px) * 1.75);
+    width: auto;
+    pointer-events: none;
+  }
+  .hero-copy {
+    position: relative;
+    z-index: 4;
+    max-width: 34rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Rides up over the phones' faded bottom edge. */
+    margin-top: calc(-1 * clamp(3.5rem, 9vh, 6rem) - 0.5 * var(--phone-w));
+  }
+  h1 {
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5.4vw, 3.9rem);
+    line-height: 1.08;
+    letter-spacing: -.03em;
+    color: rgba(244, 244, 245, .72);
+  }
+  h1 .ember {
+    color: #fff;
+  }
+  .lede {
+    margin-top: 1.35rem;
+    max-width: 27rem;
+    font-size: clamp(.9rem, 1.6vw, 1rem);
+    line-height: 1.7;
+    color: var(--dim-dark);
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .8rem;
+    margin-top: 2rem;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    padding: .7rem 1.25rem;
+    border-radius: 14px;
+    border: 1px solid var(--line-dark);
+    background: rgba(244, 244, 245, .04);
+    color: var(--snow);
+    text-decoration: none;
+    transition: border-color .25s, background .25s, transform .25s;
+  }
+  .badge:hover {
+    border-color: var(--ember);
+    background: rgba(244, 244, 245, .1);
+    transform: translateY(-2px);
+  }
+  .badge svg { width: 20px; height: 20px; fill: currentColor; flex: none; }
+  .badge small {
+    display: block;
+    font-size: .5625rem;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--dim-dark);
+  }
+  .badge b {
+    display: block;
+    font-size: .8125rem;
+    font-weight: 600;
+    letter-spacing: .01em;
+    margin-top: .1rem;
   }
 
-  /* ---------- Story (sticky phone scrollytelling) ---------- */
-  .story { position: relative; }
-  .js .story { height: calc(var(--steps) * 92svh + 100svh); }
-  .story-sticky { position: relative; }
-  .js .story-sticky {
-    position: sticky; top: 0;
-    height: 100svh;
-    overflow: hidden;
+  /* ---------- hero phones ---------- */
+  .stage {
+    position: relative;
+    z-index: 1;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    /* Pull the stage up so the top ~30% of the phones rises above the logo's bottom edge
+       (logo half-height ~115px; 30% of phone height = 0.57 * phone width at 9/17). */
+    margin-top: calc(-50svh + 115px - 0.57 * var(--phone-w));
+    /* The back phone hangs 56% to the right; shift the pair left so the group reads centered. */
+    transform: translateX(calc(var(--phone-w) * -0.28));
   }
-  .phone-stage { display: none; }
-  .js .phone-stage {
-    position: absolute; inset: 0;
-    display: grid; place-items: center;
+  .stage-fade {
+    position: absolute;
+    left: -40vw;
+    right: -40vw;
+    /* Extends past the stage bottom: the tilted back phone and shadows overhang the box,
+       and any uncovered sliver reads as a hard edge. Stays solid to the very end. */
+    bottom: -30%;
+    height: 105%;
+    background: linear-gradient(180deg, rgba(13, 13, 14, 0) 0%, rgba(13, 13, 14, .45) 38%, var(--night) 68%, var(--night) 100%);
     pointer-events: none;
+    z-index: 3;
   }
   .phone {
-    position: relative;
-    width: min(58vw, 300px);
-    aspect-ratio: 9 / 19.4;
-    background: #000;
-    overflow: hidden;
-    pointer-events: auto;
-    touch-action: none;
-    transform: translate(var(--px, 0), var(--py, 0)) rotate(var(--prot, 0deg)) scale(var(--pscale, 1));
-    will-change: transform;
+    width: var(--phone-w);
+    border-radius: 15%/6.9%;
+    background: linear-gradient(165deg, #2b2b2e, #121213 65%);
+    padding: .8%;
     box-shadow:
-      0 0 0 3px #2c2c2c,
-      0 0 0 7px #101010,
-      0 40px 90px rgba(0, 0, 0, 0.75);
+      inset 0 0 0 1px rgba(255, 255, 255, .16),
+      inset 0 1px 0 rgba(255, 255, 255, .22),
+      0 60px 90px -34px rgba(0, 0, 0, .8),
+      0 24px 40px -20px rgba(0, 0, 0, .6);
   }
-  .phone canvas, .phone .shot-img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: opacity 900ms ease-in-out;
-  }
-  /* device chrome */
-  .phone.ios { border-radius: 52px; }
-  .phone.ios::before { /* dynamic island */
-    content: ""; position: absolute; top: 13px; left: 50%; transform: translateX(-50%);
-    width: 32%; height: 25px;
-    background: #000;
-    border-radius: 999px;
-    z-index: 3;
-  }
-  .phone.ios::after { /* home indicator */
-    content: ""; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-    width: 38%; height: 5px;
-    background: rgba(255,255,255,0.85);
-    border-radius: 999px;
-    z-index: 3;
-    mix-blend-mode: overlay;
-  }
-  .phone.android { border-radius: 34px; }
-  .phone.android::before { /* punch-hole camera */
-    content: ""; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-    width: 13px; height: 13px;
-    background: #000;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 3px #000, inset 0 0 5px 3px #1c2733;
-    z-index: 3;
-  }
-  .phone.android::after { /* gesture bar */
-    content: ""; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
-    width: 30%; height: 4px;
-    background: rgba(255,255,255,0.8);
-    border-radius: 999px;
-    z-index: 3;
-    mix-blend-mode: overlay;
-  }
-  .phone .glare {
-    position: absolute; inset: 0; z-index: 2;
-    background: linear-gradient(115deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.025) 30%, rgba(255,255,255,0) 55%);
-    pointer-events: none;
-  }
-
-  /* step copy */
-  .step {
+  .screen {
     position: relative;
-    width: min(88%, 30rem);
-    margin-inline: auto;
-    padding-block: 3rem;
+    aspect-ratio: 9 / 17;
+    border-radius: 12.5%/5.6%;
+    overflow: hidden;
+    background: #1c1c1e;
   }
-  .js .step {
+  .shot {
+    display: block;
     position: absolute;
-    top: 50%;
-    padding-block: 0;
-    opacity: 0;
-    transform: translateY(24px);
-    will-change: opacity, transform;
+    inset: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    transition: opacity 1.1s ease;
   }
-  .js .step[data-align="left"]  { left: clamp(1.5rem, 7vw, 8rem); }
-  .js .step[data-align="right"] { right: clamp(1.5rem, 7vw, 8rem); text-align: left; }
-  .js .step[data-align="center"] { left: 50%; text-align: center; --cx: -50%; }
-  .step .kicker {
-    display: block;
-    font-size: 0.78rem; font-weight: 700;
-    letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--accent);
-    margin-block-end: 0.9rem;
-    transition: color 700ms ease;
-  }
-  .step h2 {
-    font-size: clamp(1.8rem, 1.2rem + 2.8vw, 3rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-    margin-block-end: 1rem;
-  }
-  .step p { color: var(--text-dim); max-width: 26rem; text-wrap: pretty; }
-  .step[data-align="center"] p { margin-inline: auto; }
-  .step .fine {
-    margin-block-start: 1.1rem;
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.42);
-    font-family: ui-monospace, Menlo, Consolas, monospace;
-  }
-  .step .names { color: var(--text); font-weight: 600; }
-  .gesture-lines { list-style: none; margin-block-start: 0.4rem; }
-  .gesture-lines li {
-    display: flex; align-items: baseline; gap: 0.8rem;
-    padding-block: 0.42rem;
-    color: var(--text-dim);
-  }
-  .gesture-lines .dir {
-    color: var(--accent);
-    font-weight: 800;
-    width: 1.4rem;
-    flex: none;
-    transition: color 700ms ease;
-  }
-  .gesture-lines .what { color: var(--text); font-weight: 600; }
-
-  /* Mobile: copy sits at the bottom, phone floats above */
-  @media (max-width: 47.9375rem) {
-    .js .phone-stage { align-items: start; padding-top: 7svh; }
-    .js .phone { width: min(46vw, 210px); }
-    .js .step, .js .step[data-align] {
-      left: 50%; right: auto;
-      top: auto; bottom: 4.5svh;
-      --cx: -50%;
-      text-align: center;
-      width: min(90%, 26rem);
-    }
-    .js .step p { margin-inline: auto; }
-    .js .step .gesture-lines { display: inline-block; text-align: start; }
-  }
-
-  /* ---------- Ending / download ---------- */
-  .download {
+  .stage .phone.front {
     position: relative;
-    min-height: 90svh;
-    display: grid; place-items: center;
-    text-align: center;
-    isolation: isolate;
-    overflow: hidden;
-    padding-block: 6rem;
+    z-index: 2;
+    transform: rotate(-7deg);
   }
-  .download .dl-canvas { position: absolute; inset: 0; z-index: -2; opacity: 0.55; }
-  .download .dl-canvas canvas { width: 100%; height: 100%; position: absolute; inset: 0; }
-  .download .dl-scrim {
-    position: absolute; inset: 0; z-index: -1;
-    background:
-      linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.35) 35%, rgba(10,10,10,0.55) 100%);
+  .stage .phone.back {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(9deg) translate(56%, 6%) scale(.92);
+    filter: brightness(.82);
   }
-  .download h2 {
-    font-size: clamp(2.2rem, 1.4rem + 4.5vw, 4.2rem);
-    font-weight: 800; letter-spacing: -0.02em; line-height: 1.08;
-    text-wrap: balance;
-    text-shadow: 0 2px 24px rgba(0,0,0,0.8);
-  }
-  .download .sub { margin: 1.2rem auto 2.6rem; color: #d6d6d6; max-width: 30rem; text-shadow: 0 1px 10px rgba(0,0,0,0.8); }
-  .badges { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
-  .store-badge {
-    display: inline-flex; align-items: center; gap: 0.7rem;
-    min-height: 56px;
-    padding: 0.55rem 1.4rem;
-    border-radius: 16px;
-    text-decoration: none;
-    background: rgba(255,255,255,0.93);
-    color: #111;
-    transition: transform 150ms ease-out, background 150ms ease-out;
-  }
-  .store-badge:hover, .store-badge:focus-visible { transform: translateY(-2px); background: #fff; }
-  .store-badge .lines { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
-  .store-badge .small { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; opacity: 0.65; }
-  .store-badge .big { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
-  .store-badge.soon {
-    background: rgba(255,255,255,0.06);
-    color: var(--text-dim);
-    border: 1px dashed rgba(255,255,255,0.28);
-    cursor: default;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .store-badge.soon:hover { transform: none; background: rgba(255,255,255,0.06); }
-  .premium-note { margin-block-start: 1.8rem; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-shadow: 0 1px 8px rgba(0,0,0,0.8); }
 
-  /* ---------- Screenshots ---------- */
-  .shots-section { padding: clamp(4rem, 8vw, 7rem) 1.5rem; text-align: center; }
-  .shots-section h2 {
-    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
-    font-weight: 800; letter-spacing: -0.02em;
-    margin-block-end: clamp(2rem, 5vw, 3.5rem);
-  }
-  .shots { display: flex; flex-wrap: wrap; gap: 1.8rem; justify-content: center; }
-  .shot { text-align: center; }
-  .shot .frame {
-    display: block;
-    width: min(60vw, 210px);
-    aspect-ratio: 9 / 19.4;
-    border-radius: 32px;
-    overflow: hidden;
-    background: #101010;
-    box-shadow: 0 0 0 2px #262626, 0 0 0 5px #0e0e0e, 0 24px 50px rgba(0,0,0,0.55);
+  /* ---------- features ---------- */
+  .features {
     position: relative;
+    z-index: 3;
+    background: linear-gradient(180deg, #19191b, #0b0b0c);
+    color: var(--snow);
+    border-radius: 28px 28px 0 0;
+    padding: clamp(3.5rem, 9vh, 6rem) clamp(1.25rem, 6vw, 5.5rem) clamp(4rem, 10vh, 6.5rem);
   }
-  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .shot.missing img { display: none; }
-  .shot.missing .frame::after {
-    content: "Screenshot\A coming soon";
-    white-space: pre;
-    color: var(--text-dim);
-    font-size: 0.82rem;
-    line-height: 1.5;
-    border: 1.5px dashed rgba(255,255,255,0.18);
+  .features-inner { max-width: 66rem; margin: 0 auto; }
+  h2 {
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.8vw, 2.6rem);
+    letter-spacing: -.025em;
+    line-height: 1.15;
+  }
+  h2 .ember { color: var(--ember); }
+  .features .prose {
+    margin-top: 1rem;
+    max-width: 30rem;
+    font-size: clamp(.875rem, 1.5vw, .9375rem);
+    line-height: 1.7;
+    color: var(--dim-light);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; max-width: 36rem; }
+  }
+  .feat {
+    background: rgba(244, 244, 245, .05);
+    border: 1px solid var(--line-dark);
     border-radius: 22px;
-    position: absolute; inset: 12px;
-    display: grid; place-items: center;
+    padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem);
+    text-align: center;
   }
-  .shot figcaption { margin-block-start: 0.9rem; color: var(--text-dim); font-size: 0.9rem; }
-
-  /* ---------- Footer ---------- */
-  .site-footer {
-    border-top: 1px solid var(--border);
-    padding: 2.2rem clamp(1.2rem, 4vw, 2.5rem) 2.6rem;
-    color: var(--text-dim);
-    font-size: 0.88rem;
-    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
+  .feat .icon {
+    width: 68px; height: 68px;
+    border-radius: 20px;
+    background: var(--tile);
+    color: var(--tile-ink);
+    display: grid;
+    place-items: center;
+    margin: 0 auto 1.25rem;
   }
-  .site-footer nav { display: flex; gap: 1.4rem; }
-  .site-footer a { color: var(--text-dim); }
-  .site-footer a:hover, .site-footer a:focus-visible { color: var(--text); }
-  .footer-brand { font-family: var(--wordmark); font-size: 1.15rem; color: var(--text); }
-  .footer-meaning { width: 100%; font-size: 0.8rem; opacity: 0.7; }
+  .feat .icon svg {
+    width: 32px; height: 32px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .feat h3 {
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: -.015em;
+  }
+  .feat p {
+    margin: .6rem auto 0;
+    max-width: 28rem;
+    font-size: clamp(.9375rem, 1.6vw, 1.0625rem);
+    line-height: 1.65;
+    color: rgba(244, 244, 245, .45);
+  }
+  .feat .hl {
+    color: #fff;
+    font-weight: 600;
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  /* ---------- footer band ---------- */
+  .band {
+    background: #0a0a0b;
+    padding: clamp(3rem, 8vh, 4.5rem) clamp(1.25rem, 6vw, 5.5rem);
+  }
+  .band-inner {
+    max-width: 66rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  .band .badges {
+    justify-content: center;
+    margin-top: 0;
+  }
+  .band h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+  .band .prose {
+    margin-top: .6rem;
+    font-size: .875rem;
+    line-height: 1.65;
+    color: var(--dim-dark);
+    max-width: 26rem;
+  }
+  footer {
+    background: var(--night);
+    border-top: 1px solid var(--line-dark);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.8rem clamp(1.25rem, 6vw, 5.5rem) 2.2rem;
+    font-size: .6875rem;
+    letter-spacing: .04em;
+    color: var(--dim-dark);
+  }
+  footer .wordmark { font-size: 1rem; color: var(--dim-dark); gap: .5rem; }
+  footer .wordmark .logo { width: 22px; height: 22px; opacity: .62; }
+  footer .wordmark .script { height: 22px; color: var(--dim-dark); }
+  footer a:not(.wordmark) {
+    color: var(--dim-dark);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(250, 246, 241, .3);
+    padding-bottom: 1px;
+  }
+  footer a:not(.wordmark):hover { color: var(--snow); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .stage .phone.back { transform: rotate(9deg) translate(48%, 6%) scale(.9); }
+  }
+  @media (max-width: 520px) {
+    .phone { width: clamp(150px, 42vw, 180px); }
   }
 </style>
 </head>
 <body>
-<a href="#download" class="skip-link">Skip to download</a>
 
-<nav class="site-nav" aria-label="Main">
-  <a href="#top" class="brand">Tapet</a>
-  <a class="nav-cta" href="#download">Get Tapet</a>
+<nav>
+  <a class="wordmark" href="#top" aria-label="Tapet">
+    <img class="logo" src="assets/logo-mono.png" alt="" draggable="false">
+  </a>
 </nav>
 
 <main id="top">
-
-  <!-- ============ Hero ============ -->
-  <header class="hero">
-    <div class="hero-canvas" aria-hidden="true">
-      <canvas id="hero-a"></canvas>
-      <canvas id="hero-b"></canvas>
+  <!-- hero -->
+  <section class="hero">
+    <div class="logo-mask" role="img" aria-label="Tapet">
+      <svg class="logo-bg" viewBox="0 0 512 512" aria-hidden="true">
+        <g id="tapet-arcs" fill="#f4f4f5" transform="translate(196,196) translate(60,60) scale(0.61275) translate(-60,-60)">
+          <g transform="translate(60.562,249.21)"><path d="M-2.48 32.17 C-30.09,32.17 -61.6,27.12 -94.44,12.2 C-105.75,7.06 -110.75,-6.28 -105.61,-17.59 C-100.47,-28.9 -87.14,-33.91 -75.82,-28.77 C3.52,7.28 73.88,-29.16 74.58,-29.54 C85.56,-35.36 99.18,-31.19 105,-20.21 C110.83,-9.23 106.66,4.39 95.68,10.21 C93.23,11.51 53.37,32.17 -2.48,32.17Z"/></g>
+          <g transform="translate(-113.751,114.181)"><path d="M26.57 103.64 C20.48,103.64 14.41,101.19 9.98,96.35 C-63.72,15.98 -47.86,-80.91 -47.15,-84.99 C-45.02,-97.24 -33.37,-105.43 -21.12,-103.3 C-8.91,-101.18 -0.72,-89.57 -2.8,-77.35 C-2.9,-76.73 -6.04,-56.62 -1.85,-29.03 C3.68,7.46 18.82,39.41 43.14,65.93 C51.54,75.09 50.92,89.32 41.77,97.72 C37.45,101.68 32,103.64 26.57,103.64Z"/></g>
+          <g transform="translate(233.752,114.159)"><path d="M-26.56 103.66 C-32,103.66 -37.45,101.71 -41.77,97.74 C-50.92,89.35 -51.54,75.11 -43.14,65.95 C-18.82,39.43 -3.68,7.49 1.85,-29 C6.09,-56.89 2.83,-77.14 2.8,-77.34 C0.67,-89.59 8.87,-101.19 21.12,-103.32 C33.36,-105.46 45.02,-97.21 47.15,-84.97 C47.86,-80.89 63.72,16 -9.98,96.37 C-14.41,101.21 -20.48,103.66 -26.56,103.66Z"/></g>
+          <g transform="translate(167.175,-88.665)"><path d="M68.81 72.66 C60.56,72.66 52.62,68.1 48.67,60.23 C48.43,59.76 39.06,41.65 19.31,21.84 C-6.75,-4.3 -37.86,-21.1 -73.16,-28.08 C-85.35,-30.49 -93.27,-42.33 -90.86,-54.52 C-88.45,-66.71 -76.6,-74.64 -64.42,-72.23 C42.54,-51.06 87.1,36.43 88.94,40.15 C94.47,51.28 89.93,64.78 78.8,70.31 C75.58,71.9 72.17,72.66 68.81,72.66Z"/></g>
+          <g transform="translate(-47.308,-88.641)"><path d="M-68.8 72.68 C-72.17,72.68 -75.59,71.92 -78.81,70.32 C-89.94,64.8 -94.47,51.25 -88.94,40.12 C-87.09,36.41 -42.54,-51.08 64.42,-72.25 C76.61,-74.67 88.45,-66.74 90.86,-54.55 C93.28,-42.36 85.35,-30.52 73.16,-28.11 C37.86,-21.12 6.75,-4.32 -19.3,21.81 C-39.22,41.79 -48.58,60.04 -48.68,60.22 C-52.6,68.12 -60.54,72.68 -68.8,72.68Z"/></g>
+        </g>
+      </svg>
+      <svg id="tapet-script" viewBox="0 0 841.9 595.3" aria-hidden="true">
+        <g id="tapet-glyphs">
+      <path id="tapet-p1" fill="currentColor" d="M208.71,327.18c14.64,-34.55 29.1,-69.21 45.54,-102.96c12.96,-25.51 24.77,-51.79 40.94,-75.49c27.24,7.57 54.58,15.74 82.91,17.85c16.58,1.09 34.38,-0.67 48.38,-10.38c11.33,-7.54 19.18,-20.4 19.97,-34.06c0.38,-2.87 -1.19,-5.4 -3.63,-6.77c-2.59,1.3 -3.76,4.06 -5.52,6.18c-4.29,5.44 -10.32,9.35 -16.85,11.55c-11.61,4.04 -24.09,3.16 -36.15,2.54c-25.74,-2.32 -51.06,-7.66 -76.37,-12.66c-22.34,-3.9 -44.62,-8.34 -67.17,-10.87c-24.07,-2.8 -48.91,-3.24 -72.43,3.36c-17.25,4.48 -33.33,13.91 -45.13,27.32c-9.37,11.14 -15.99,25.14 -16.21,39.89c-0.56,14.72 4.9,30.05 16.27,39.77c11.69,10.02 27.88,13.64 42.95,11.73c17.06,-2.15 33.03,-11.53 43.37,-25.24c7.8,-10.83 12.95,-24.03 12.32,-37.53c-0.65,-7.31 -2.31,-15.17 -7.77,-20.48c-1.68,-1.46 -4.21,-3.16 -6.41,-1.78c-2.21,1.18 -2.26,3.91 -2.35,6.09c0.21,23.84 -19.27,45.38 -42.38,49.56c-11.54,1.93 -24.68,-1.7 -31.91,-11.31c-5.85,-7.51 -6.81,-17.77 -4.73,-26.82c2.62,-11.78 10.96,-21.56 20.83,-28.14c14.73,-9.72 32.99,-12.31 50.3,-11.69c18.69,1.13 37.2,4.54 55.24,9.51c6.74,1.81 13.65,3.18 20.16,5.75c-25.96,38.44 -49.91,78.24 -71.26,119.42c-10.66,19.33 -20.39,39.16 -30.09,58.97c-1.79,3.78 -4.71,7.47 -3.87,11.91c4.46,1.14 9.11,0.74 13.66,0.84c7.12,-0.07 14.25,0.31 21.36,0.01C205.99,333.16 207.64,329.88 208.71,327.18z"/>
+      <path id="tapet-p2" fill="currentColor" d="M727.33,183.16c-6.09,9.14 -16.75,13.33 -27.04,15.61c-20.37,4.76 -41.5,1.14 -62.06,-1.71c3.05,-9.71 9.33,-17.9 12.18,-27.61c-0.57,-1.52 -2.09,-2.28 -3.62,-2.09c-7.04,-0.19 -14.09,-0.19 -21.32,-0.19c-2.09,-0.19 -4.19,0.95 -5.33,3.05c-3.81,6.85 -6.47,14.47 -10.47,21.51c-20.37,-3.43 -41.31,-5.33 -61.88,-2.86c-13.33,1.71 -26.27,7.04 -37.32,15.04c-3.05,2.48 -6.47,5.14 -7.43,8.95c-0.76,2.86 1.71,4.76 4.19,5.52c10.09,-5.33 21.13,-9.14 32.36,-11.04c8.38,-1.52 16.94,-1.33 25.32,-1.33c12.76,0.19 25.32,2.1 37.7,4.38c-5.33,10.28 -10.09,20.94 -14.85,31.41c-7.23,15.99 -13.71,32.56 -23.42,47.22c-8,10.47 -17.52,20.18 -29.7,25.13c-5.71,2.28 -12.38,3.05 -17.9,-0.19c-5.33,-2.48 -8,-8.57 -7.81,-14.28c10.28,-2.86 20.37,-7.23 29.51,-13.33c10.47,-7.04 19.61,-16.56 24.18,-28.37c2.67,-7.62 3.05,-16.75 -2.09,-23.42c-5.33,-6.47 -14.66,-8 -22.66,-7.42c-12.18,0.57 -23.99,6.47 -32.56,14.85c-15.04,13.9 -25.13,32.94 -27.61,53.12c-6.47,2.09 -12.95,3.62 -19.61,4.19c6.09,-10.85 11.42,-22.47 13.9,-34.65c1.52,-8.19 2.09,-16.75 -0.95,-24.56c-2.67,-6.66 -8.95,-11.42 -15.99,-12.76c-10.47,-2.29 -20.94,1.71 -29.13,8c-4,2.67 -6.85,6.47 -10.85,8.95c0.76,-4.19 2.86,-8 3.81,-11.99c0.38,-1.9 -1.52,-3.62 -3.43,-3.62c-6.66,0 -13.33,0 -19.99,0.19c-3.24,-0.38 -4.76,3.05 -5.9,5.52c-4.19,10.09 -8.76,20.18 -13.14,30.27c-4.38,9.9 -8,20.18 -14.66,28.94c-5.9,7.61 -12.38,15.42 -21.13,20.18c-2.67,1.33 -7.23,1.9 -8,-1.9c-0.95,-6.66 1.71,-12.95 4.19,-19.04c8.57,-20.56 16.94,-41.12 27.22,-60.92c1.14,-1.71 -1.33,-3.62 -3.05,-3.24c-8.57,0.57 -17.13,-0.57 -25.51,0.76c-2.48,3.43 -4.19,7.23 -6.09,10.85c-2.67,-2.86 -4.38,-6.85 -7.81,-9.33c-7.43,-5.52 -17.71,-5.14 -26.27,-2.66c-14.47,3.62 -26.08,13.9 -34.65,25.7c-10.28,13.9 -17.71,30.46 -19.04,47.79c-0.38,9.33 1.14,19.8 8.19,26.27c6.47,5.9 16.18,6.47 24.18,4.38c10.85,-2.67 19.8,-10.28 26.84,-18.66c0,4.19 0.57,8.38 2.86,11.8c2.86,4.95 8.38,8 13.9,8.19c13.33,0.76 26.08,-5.52 35.22,-14.66c-10.85,23.23 -22.66,46.26 -35.03,68.73c-8.19,13.52 -15.99,27.42 -26.27,39.41c-10.85,13.33 -23.61,26.27 -39.98,32.75c-11.23,4.57 -25.13,4.57 -35.41,-2.28c-8.38,-5.14 -13.14,-14.85 -13.33,-24.56c-0.95,-11.23 3.62,-22.28 10.47,-30.84c11.04,-12.95 27.6,-19.04 43.79,-22.27c18.09,-3.05 36.36,-3.81 54.64,-2.09c5.33,-8.57 9.33,-18.09 13.71,-27.22c-13.52,0 -26.84,0.19 -40.17,1.52c-17.52,2.47 -35.22,6.66 -51.21,14.47c-9.9,5.14 -19.23,11.42 -27.03,19.42c-12.76,12.95 -20.94,30.65 -20.56,48.93c0,10.85 3.81,21.51 10.47,29.89c11.42,13.52 29.51,20.37 47.03,20.18c16.37,0 32.18,-6.28 45.69,-15.61c15.8,-10.66 28.18,-25.89 38.84,-41.69c9.71,-14.47 17.52,-30.08 25.32,-45.5c7.39,-14.59 14.06,-29.55 20.88,-44.51h0c54.2,6.52 73.35,-25.94 73.35,-25.94c10.09,-0.19 20.56,-1.14 30.27,-4.38c1.71,9.14 7.62,17.52 15.8,21.89c9.52,5.14 20.94,5.14 31.41,2.67c14.85,-3.81 27.8,-13.52 37.51,-25.13c-1.14,6.47 0.76,13.14 4.76,18.28c4.38,5.9 11.99,8.95 19.42,8.57c10.66,0.19 20.56,-4.95 28.37,-11.61c6.09,-4.95 11.04,-11.23 17.71,-15.61c10.85,-7.62 24.75,-10.85 37.89,-8.19c10.66,1.71 20.94,7.81 26.65,17.13c6.47,10.47 6.66,24.18 2.48,35.6c-5.33,12.95 -16.18,22.85 -28.18,29.32c-14.85,8.38 -31.79,11.61 -48.55,12.95c-17.52,1.52 -35.03,0.38 -52.36,-1.33c-21.13,-2.09 -41.88,-5.52 -62.83,-9.33c-43.41,-8.38 -86.82,-17.71 -130.22,-26.84c-4,6.66 -6.85,13.71 -10.28,20.56c-1.71,3.43 -3.62,7.04 -4.95,10.66c46.64,8.95 92.91,19.42 139.55,27.61c40.17,6.66 81.1,11.04 121.66,5.14c16.94,-2.48 33.7,-7.04 48.93,-14.85c11.99,-6.09 22.85,-14.85 31.03,-25.51c9.52,-12.18 14.66,-27.8 14.09,-43.22c-0.57,-14.28 -6.66,-28.37 -17.32,-38.08c-19.23,-17.9 -51.59,-18.47 -72.16,-2.28c-9.14,6.47 -15.8,16.94 -27.23,19.23c-5.33,0.76 -8.38,-4.57 -8.38,-9.14c1.52,-11.99 7.62,-22.66 12.18,-33.51c8.57,-19.23 16.75,-38.65 25.32,-57.88c18.09,2.28 36.36,4 54.45,1.14c14.47,-1.9 29.32,-6.28 41.12,-15.42c3.81,-3.24 8,-7.23 8.76,-12.56C735.14,184.31 730,179.55 727.33,183.16zM314.58,271.31c-6.09,13.33 -12.57,27.03 -23.8,36.93c-3.62,2.86 -7.81,5.71 -12.57,5.14c-4,-0.95 -5.9,-5.33 -5.9,-9.14c-0.57,-14.28 5.52,-27.99 12.76,-39.98c5.52,-8.57 12.57,-17.52 22.85,-20.37c4.76,-1.52 11.04,0.95 11.8,6.47C320.48,257.6 317.05,264.65 314.58,271.31zM382.54,320.62c7.43,-16.18 15.23,-32.37 23.8,-48.17c5.71,-9.9 12.38,-20.18 22.47,-26.27c3.81,-1.9 8.57,-3.81 12.56,-1.14c2.48,2.28 2.86,6.09 2.67,9.33C443.47,260.84 436.8,324.24 382.54,320.62zM530.66,247.13c4,-3.24 8.76,-6.66 14.09,-6.47c3.43,0 4.95,3.62 5.33,6.66c0.19,5.14 -2.28,10.09 -5.14,14.28c-3.43,4.95 -7.23,9.52 -11.8,13.33c-7.23,5.9 -15.8,9.71 -24.56,12.56C511.82,272.26 518.86,257.6 530.66,247.13z"/>
+      </g>
+      </svg>
     </div>
-    <div class="hero-scrim" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <h1>No two are<br>ever alike.</h1>
-      <p class="sub">Tapet doesn&rsquo;t download wallpapers &mdash; it creates them. On your phone. At your exact resolution. Forever.</p>
-      <div class="hero-actions">
-        <a class="btn-solid" href="#download">Get Tapet</a>
-        <button class="btn-ghost" id="hero-generate" type="button">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
-          Generate
-        </button>
-      </div>
-    </div>
-    <p class="hero-note">This background is being generated live in your browser &mdash; a small taste of what Tapet does on your phone, at 4K.</p>
-    <span class="scroll-hint" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-  </header>
 
-  <!-- ============ Story ============ -->
-  <section class="story" id="story" style="--steps: 6;" aria-label="What Tapet does">
-    <div class="story-sticky">
-      <div class="phone-stage" aria-hidden="true">
-        <div class="phone" id="phone">
-          <canvas id="phone-a"></canvas>
-          <canvas id="phone-b"></canvas>
-          <img class="shot-img" id="phone-shot" alt="" hidden>
-          <span class="glare"></span>
+    <div class="stage" aria-hidden="true">
+      <div class="phone back">
+        <div class="screen">
+          <img class="shot" src="assets/dark2.svg" alt="" draggable="false">
         </div>
       </div>
-
-      <article class="step" data-step="0" data-align="left">
-        <span class="kicker">Created, not downloaded</span>
-        <h2>Every wallpaper is a first edition.</h2>
-        <p>Each one is a one-of-a-kind abstract pattern, generated on-device the moment you ask for it. It has never existed before, and it will never exist again &mdash; unless you keep it.</p>
-        <p class="fine" aria-hidden="true">№ <span id="edition">0000001</span> of ∞</p>
-      </article>
-
-      <article class="step" data-step="1" data-align="right">
-        <span class="kicker">110+ patterns</span>
-        <h2>A hundred and ten ways to be unrepeatable.</h2>
-        <p>Hand-crafted generative designs, each with a name and a personality &mdash; <span class="names" id="pattern-names">Serengeti, Havana, Antares</span> &mdash; and each an infinite family of wallpapers. 60+ of them are free.</p>
-      </article>
-
-      <article class="step" data-step="2" data-align="left">
-        <span class="kicker">14 styles &middot; 1000+ palettes</span>
-        <h2>Any color, as long as it&rsquo;s yours.</h2>
-        <p>Neon, Pastel, Cozy, Monochrome&hellip; handpicked palettes paint every pattern &mdash; or build your own from a photo, or straight from your camera. Watch this page repaint itself with each one.</p>
-      </article>
-
-      <article class="step" data-step="3" data-align="right">
-        <span class="kicker">Gesture-driven</span>
-        <h2>A swipe away from something new.</h2>
-        <ul class="gesture-lines">
-          <li><span class="dir" aria-hidden="true">&uarr;</span><span><span class="what">Swipe up</span> &mdash; new wallpaper</span></li>
-          <li><span class="dir" aria-hidden="true">&darr;</span><span><span class="what">Swipe down</span> &mdash; back to the previous one</span></li>
-          <li><span class="dir" aria-hidden="true">&larr;</span><span><span class="what">Swipe left</span> &mdash; new pattern, keep the colors</span></li>
-          <li><span class="dir" aria-hidden="true">&rarr;</span><span><span class="what">Swipe right</span> &mdash; new colors, keep the pattern</span></li>
-        </ul>
-      </article>
-
-      <article class="step" data-step="4" data-align="left">
-        <span class="kicker">On autopilot</span>
-        <h2>Fresh by morning. Or every fifteen minutes.</h2>
-        <p>The automatic changer delivers a new wallpaper on your rhythm &mdash; different ones for lock and home screen. Blur, vignette, and a dark mode that follows the ambient light around you. Your AMOLED screen will approve.</p>
-      </article>
-
-      <article class="step" data-step="5" data-align="right">
-        <span class="kicker">Private by design</span>
-        <h2>Beautiful, even in airplane mode.</h2>
-        <p>Nothing is downloaded, uploaded, or tracked. Zero servers involved. No ads. Save at 4K and beyond. Premium is a one-time purchase &mdash; no subscriptions, ever.</p>
-        <p class="fine">0 servers &middot; 0 ads &middot; 0 subscriptions</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ Download ============ -->
-  <section class="download" id="download" aria-labelledby="dl-title">
-    <div class="dl-canvas" aria-hidden="true"><canvas id="dl-c"></canvas></div>
-    <div class="dl-scrim" aria-hidden="true"></div>
-    <div>
-      <h2 id="dl-title">Your next wallpaper<br>doesn&rsquo;t exist yet.</h2>
-      <p class="sub">Generate it.</p>
-      <div class="badges">
-        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet">
-          <svg width="26" height="28" viewBox="0 0 24 26" aria-hidden="true"><path fill="#01875f" d="M2.6.9C2 1.3 1.6 2 1.6 2.9v20.2c0 .9.4 1.6 1 2l11.7-12.1L2.6.9z"/><path fill="#ffbc00" d="M18.2 9.1 4.6.4c-.6-.4-1.4-.4-2 0l11.7 12.6 3.9-3.9z"/><path fill="#f13d3d" d="m18.2 16.9-3.9-3.9L2.6 25.1c.6.4 1.4.4 2-.1l13.6-8.1z"/><path fill="#31a8ff" d="m22.4 11.6-4.2-2.5-4.2 3.9 4.2 3.9 4.2-2.5c1.2-.7 1.2-2.1 0-2.8z"/></svg>
-          <span class="lines"><span class="small">Get it on</span><span class="big">Google Play</span></span>
-        </a>
-        <span class="store-badge soon" role="note" aria-label="Coming soon to the iPhone App Store">
-          <span class="lines"><span class="small">Coming soon to the</span><span class="big">App&nbsp;Store</span></span>
-        </span>
+      <div class="phone front">
+        <div class="screen">
+          <img class="shot" src="assets/dark1.svg" alt="" draggable="false">
+        </div>
       </div>
-      <p class="premium-note">Free with 60+ patterns &middot; Premium is a one-time purchase, no subscriptions</p>
+      <div class="stage-fade" aria-hidden="true"></div>
+    </div>
+
+    <div class="hero-copy">
+      <h1><span class="ember">Free</span> endless wallpapers at your fingertips</h1>
+      <p class="lede">Combine patterns, styles and effects and let it create endless wallpapers, 100% automatic.</p>
+      <div class="badges" id="download">
+        <a class="badge" href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3.5v17c0 .6.7 1 1.2.7L6 20.7 14.6 12 6 3.3l-.8-.5C4.7 2.5 4 2.9 4 3.5zm12.2 6.9L8.3 2.5l9.6 5.5-1.7 2.4zm0 3.2 1.7 2.4-9.6 5.5 7.9-7.9zm3.9-2.8c.7.4.7 1.4 0 1.8l-2.3 1.3-1.9-1.9 1.9-1.9 2.3.7z"/></svg>
+          <span><small>Get it on</small><b>Google Play</b></span>
+        </a>
+        <a class="badge" href="https://apps.apple.com/us/app/tapet/id6504771735" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.8c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.9-1.6 0-3.1 1-4 2.4-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.8 2.5 3.1 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.7-3.6zM14 5.6c.7-.8 1.1-1.9 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+          <span><small>Download on the</small><b>App Store</b></span>
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- ============ Screenshots ============ -->
-  <section class="shots-section" aria-labelledby="shots-title">
-    <h2 id="shots-title">See it on a real phone.</h2>
-    <div class="shots">
-      <figure class="shot">
-        <span class="frame"><img src="assets/screenshots/screen-1.png" alt="Tapet showing a generated abstract wallpaper" width="210" height="453" loading="lazy" onerror="this.closest('.shot').classList.add('missing')"></span>
-        <figcaption>Swipe through infinite wallpapers</figcaption>
-      </figure>
-      <figure class="shot">
-        <span class="frame"><img src="assets/screenshots/screen-2.png" alt="Tapet pattern browser with dozens of pattern previews" width="210" height="453" loading="lazy" onerror="this.closest('.shot').classList.add('missing')"></span>
-        <figcaption>Browse 110+ patterns</figcaption>
-      </figure>
-      <figure class="shot">
-        <span class="frame"><img src="assets/screenshots/screen-3.png" alt="Tapet color styles and palette picker" width="210" height="453" loading="lazy" onerror="this.closest('.shot').classList.add('missing')"></span>
-        <figcaption>Pick styles &amp; build palettes</figcaption>
-      </figure>
+  <!-- features -->
+  <section class="features">
+    <div class="features-inner rv">
+      <div class="grid">
+        <div class="feat rv">
+          <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4.2L16.6 4.4a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L8.2 18.8 4 20z"/></svg></div>
+          <h3>Human-crafted patterns</h3>
+          <p>Every pattern was designed by our design team of <span class="hl">real human beings</span>. Each one can generate infinite wallpapers.</p>
+        </div>
+        <div class="feat rv">
+          <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
+          <h3>Auto-changer</h3>
+          <p>Get a new wallpaper every hour, every day, or whenever you want.</p>
+        </div>
+        <div class="feat rv">
+          <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path d="M9.5 12l2 2 3.5-4"/></svg></div>
+          <h3>No tracking, no ads, and free</h3>
+          <p>Nothing watching, nothing interrupting.</p>
+        </div>
+        <div class="feat rv">
+          <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.7 4.6L18 9.3l-4.3 1.7L12 15.6l-1.7-4.6L6 9.3l4.3-1.7L12 3z"/><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/></svg></div>
+          <h3>A stunning interface</h3>
+          <p>Fluid, colorful and a joy to touch. The app feels as good as the wallpapers look.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer band -->
+  <section class="band">
+    <div class="band-inner rv">
+      <div>
+        <p class="prose">Download for free.</p>
+      </div>
+      <div class="badges">
+        <a class="badge" href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3.5v17c0 .6.7 1 1.2.7L6 20.7 14.6 12 6 3.3l-.8-.5C4.7 2.5 4 2.9 4 3.5zm12.2 6.9L8.3 2.5l9.6 5.5-1.7 2.4zm0 3.2 1.7 2.4-9.6 5.5 7.9-7.9zm3.9-2.8c.7.4.7 1.4 0 1.8l-2.3 1.3-1.9-1.9 1.9-1.9 2.3.7z"/></svg>
+          <span><small>Get it on</small><b>Google Play</b></span>
+        </a>
+        <a class="badge" href="https://apps.apple.com/us/app/tapet/id6504771735" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.8c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.9-1.6 0-3.1 1-4 2.4-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.8 2.5 3.1 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.7-3.6zM14 5.6c.7-.8 1.1-1.9 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+          <span><small>Download on the</small><b>App Store</b></span>
+        </a>
+      </div>
     </div>
   </section>
 </main>
 
-<footer class="site-footer">
-  <span class="footer-brand">Tapet</span>
-  <nav aria-label="Footer">
-    <a href="tapet_privacy_policy.html">Privacy policy</a>
-    <a href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet">Google Play</a>
-  </nav>
-  <span>&copy; 2026 Tapet LLC</span>
-  <span class="footer-meaning">&ldquo;Tapet&rdquo; means <em>wallpaper</em> in the Scandinavian languages.</span>
+<footer>
+  <a class="wordmark" href="#top" aria-label="Tapet">
+    <img class="logo" src="assets/logo-mono.png" alt="" draggable="false">
+    <svg class="script" viewBox="0 0 841.9 595.3" aria-hidden="true"><use href="#tapet-glyphs"/></svg>
+  </a>
+  <span>&copy; 2026 Tapet · <a href="https://privacy.tapet.app">Privacy Policy</a> · <a href="https://terms.tapet.app">Terms of Service</a></span>
 </footer>
 
 <script>
-(() => {
-  "use strict";
-  document.documentElement.classList.add("js");
+(function () {
+  var SUPA = "https://lyltxyscsijsijovigjz.supabase.co";
+  var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5bHR4eXNjc2lqc2lqb3ZpZ2p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4ODMxMTgsImV4cCI6MjA4ODQ1OTExOH0.KAXduQAWpsPTaa5KXoufZjpsDOfaw0pqYEo8EUMxpZc";
+  var screens = Array.prototype.slice.call(document.querySelectorAll(".stage .screen"));
+  if (!window.fetch) return;
+  fetch(SUPA + "/rest/v1/showcase_wallpapers?select=image_path,collection&order=created_at.desc&limit=80", { headers: { apikey: KEY } })
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (rows) {
+      var phoneUrls = [];
+      rows.forEach(function (r) {
+        if (r.collection === "blur") return;
+        phoneUrls.push(SUPA + "/storage/v1/object/public/showcase/" + r.image_path);
+      });
 
-  /* ---------- Seeded RNG ---------- */
-  const mulberry32 = (seed) => {
-    let a = seed >>> 0;
-    return () => {
-      a |= 0; a = (a + 0x6D2B79F5) | 0;
-      let t = Math.imul(a ^ (a >>> 15), 1 | a);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  };
-  let seedCounter = Math.floor(Math.random() * 1e9);
-  const newSeed = () => (seedCounter = (seedCounter + 0x9E3779B9) >>> 0);
-  const pick = (rng, arr) => arr[Math.floor(rng() * arr.length)];
-
-  /* ---------- Styles & palettes ---------- */
-  const STYLES = {
-    Neon:       { bg: "#0b0b12", colors: ["#ff2975", "#00f0ff", "#c6ff00", "#ff6b00", "#8a2be2"] },
-    Pastel:     { bg: "#221d29", colors: ["#ffd6e0", "#c1e7e3", "#fdf1c9", "#d7c1e7", "#bde0fe"] },
-    Cozy:       { bg: "#171310", colors: ["#d4a373", "#a98467", "#6c584c", "#e6ccb2", "#b08968"] },
-    Spring:     { bg: "#10160f", colors: ["#80b918", "#55a630", "#2b9348", "#ffff3f", "#bfd200"] },
-    Monochrome: { bg: "#101010", colors: ["#e8e8e8", "#bdbdbd", "#8a8a8a", "#5c5c5c", "#333333"] },
-    Autumn:     { bg: "#140e08", colors: ["#e76f51", "#f4a261", "#e9c46a", "#bc6c25", "#8a5a44"] },
-    Winter:     { bg: "#0b1220", colors: ["#a8dadc", "#457b9d", "#1d3557", "#e0fbfc", "#98c1d9"] },
-    Summer:     { bg: "#0f1a1c", colors: ["#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff"] },
-    Vibrant:    { bg: "#12081f", colors: ["#f72585", "#b5179e", "#7209b7", "#4361ee", "#4cc9f0"] },
-    Ocean:      { bg: "#03121f", colors: ["#0077b6", "#00b4d8", "#90e0ef", "#caf0f8", "#023e8a"] },
-    Candy:      { bg: "#1c0f16", colors: ["#ff99c8", "#fcf6bd", "#d0f4de", "#a9def9", "#e4c1f9"] },
-    Dark:       { bg: "#07090d", colors: ["#141821", "#1c2431", "#26303f", "#31445c", "#3d5a80"] },
-  };
-  const STYLE_NAMES = Object.keys(STYLES);
-  const randomStyle = () => STYLES[STYLE_NAMES[Math.floor(Math.random() * STYLE_NAMES.length)]];
-  const shade = (hex, f) => {
-    const n = parseInt(hex.slice(1), 16);
-    const ch = (s) => Math.max(0, Math.min(255, Math.round(((n >> s) & 255) * f)));
-    return `rgb(${ch(16)},${ch(8)},${ch(0)})`;
-  };
-  const relum = (hex) => {
-    const n = parseInt(hex.slice(1), 16);
-    return 0.2126 * ((n >> 16) & 255) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255);
-  };
-
-  /* ---------- Renderers (browser sketches of Tapet-style patterns) ---------- */
-  function rTriangles(ctx, w, h, pal, rng) {
-    const rows = 4 + Math.floor(rng() * 5);
-    const rh = h / rows;
-    for (let r = 0; r <= rows; r++) {
-      let x = -rng() * rh;
-      const y = r * rh;
-      while (x < w) {
-        const bw = rh * (0.6 + rng() * 1.4);
-        const c = pick(rng, pal.colors);
-        ctx.globalAlpha = 0.55 + rng() * 0.45;
-        ctx.fillStyle = rng() < 0.5 ? c : shade(c, 0.55 + rng() * 0.6);
-        ctx.beginPath();
-        if (rng() < 0.5) { ctx.moveTo(x, y); ctx.lineTo(x + bw, y); ctx.lineTo(x, y + rh); }
-        else { ctx.moveTo(x + bw, y); ctx.lineTo(x + bw, y + rh); ctx.lineTo(x, y + rh); }
-        ctx.closePath(); ctx.fill();
-        x += bw * (0.4 + rng() * 0.6);
+      // ---- phone slideshows ----
+      if (phoneUrls.length && screens.length) {
+        var showing = screens.map(function () { return null; });
+        var pick = function (mine) {
+          if (phoneUrls.length === 1) return phoneUrls[0];
+          var u, guard = 0;
+          do { u = phoneUrls[Math.floor(Math.random() * phoneUrls.length)]; }
+          while (++guard < 25 && (u === mine || showing.indexOf(u) !== -1));
+          return u;
+        };
+        screens.forEach(function (screen, idx) {
+          var visible = screen.querySelector(".shot");
+          var hidden = visible.cloneNode(false);
+          hidden.style.opacity = "0";
+          visible.parentNode.insertBefore(hidden, visible.nextSibling);
+          function advance() {
+            var prev = showing[idx];
+            var next = pick(prev);
+            // Reserve immediately, not on load — otherwise both phones can pick the
+            // same image before either finishes loading.
+            showing[idx] = next;
+            hidden.onload = function () {
+              hidden.onload = null;
+              hidden.style.opacity = "1";
+              visible.style.opacity = "0";
+              var t = visible; visible = hidden; hidden = t;
+              schedule();
+            };
+            hidden.onerror = function () {
+              hidden.onload = null;
+              showing[idx] = prev;
+              schedule();
+            };
+            hidden.src = next;
+          }
+          function schedule() {
+            setTimeout(advance, 4000 + Math.random() * 5000);
+          }
+          setTimeout(advance, idx === 0 ? 0 : 700 + Math.random() * 1500);
+        });
       }
-    }
-    ctx.globalAlpha = 1;
+
+    })
+    .catch(function () {});
+})();
+(function () {
+  var g = document.getElementById("tapet-glyphs");
+  if (g && g.getBBox) {
+    try {
+      var b = g.getBBox();
+      window.__tapetBBox = b;
+      var vb = (b.x - 6) + " " + (b.y - 6) + " " + (b.width + 12) + " " + (b.height + 12);
+      var hero = document.getElementById("tapet-script");
+      if (hero) hero.setAttribute("viewBox", vb);
+      document.querySelectorAll("svg.script").forEach(function (el) {
+        el.setAttribute("viewBox", vb);
+      });
+    } catch (e) {}
   }
-  function rCircles(ctx, w, h, pal, rng) {
-    const n = 26 + Math.floor(rng() * 30);
-    for (let i = 0; i < n; i++) {
-      ctx.globalAlpha = 0.14 + rng() * 0.4;
-      ctx.fillStyle = pick(rng, pal.colors);
-      ctx.beginPath();
-      ctx.arc(rng() * w, rng() * h, (0.05 + rng() * 0.28) * Math.max(w, h), 0, Math.PI * 2);
-      ctx.fill();
-      if (rng() < 0.35) {
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle = pick(rng, pal.colors);
-        ctx.lineWidth = 1 + rng() * 3;
-        ctx.stroke();
-      }
-    }
-    ctx.globalAlpha = 1;
+})();
+(function () {
+  var els = document.querySelectorAll(".rv");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: .15, rootMargin: "0px 0px -8% 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  } else {
+    els.forEach(function (el) { el.classList.add("in"); });
   }
-  function rStripes(ctx, w, h, pal, rng) {
-    const diag = Math.hypot(w, h);
-    ctx.save();
-    ctx.translate(w / 2, h / 2);
-    ctx.rotate((rng() - 0.5) * Math.PI * 0.7);
-    let x = -diag / 2;
-    while (x < diag / 2) {
-      const bw = diag * (0.015 + rng() * 0.09);
-      ctx.globalAlpha = 0.5 + rng() * 0.5;
-      ctx.fillStyle = pick(rng, pal.colors);
-      ctx.fillRect(x, -diag / 2, bw, diag);
-      x += bw + diag * rng() * 0.05;
-    }
-    ctx.restore();
-    ctx.globalAlpha = 1;
-  }
-  function rSplatter(ctx, w, h, pal, rng) {
-    const clusters = 5 + Math.floor(rng() * 5);
-    for (let c = 0; c < clusters; c++) {
-      const cx = rng() * w, cy = rng() * h;
-      const col = pick(rng, pal.colors);
-      const n = 24 + Math.floor(rng() * 40);
-      for (let i = 0; i < n; i++) {
-        const d = rng() * rng() * Math.max(w, h) * 0.22;
-        const a = rng() * Math.PI * 2;
-        ctx.globalAlpha = 0.35 + rng() * 0.6;
-        ctx.fillStyle = rng() < 0.8 ? col : pick(rng, pal.colors);
-        ctx.beginPath();
-        ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 0.5 + rng() * rng() * 14, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    ctx.globalAlpha = 1;
-  }
-  function rConcentric(ctx, w, h, pal, rng) {
-    const cx = rng() < 0.5 ? 0 : w, cy = rng() < 0.5 ? 0 : h;
-    let r = Math.hypot(w, h);
-    while (r > 8) {
-      ctx.globalAlpha = 0.7 + rng() * 0.3;
-      ctx.fillStyle = pick(rng, pal.colors);
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.fill();
-      r *= 0.72 + rng() * 0.16;
-    }
-    ctx.globalAlpha = 1;
-  }
-  function rShards(ctx, w, h, pal, rng) {
-    const n = 10 + Math.floor(rng() * 12);
-    for (let i = 0; i < n; i++) {
-      const cx = rng() * w, cy = rng() * h;
-      const size = (0.15 + rng() * 0.4) * Math.max(w, h);
-      const sides = 3 + Math.floor(rng() * 3);
-      const rot = rng() * Math.PI * 2;
-      ctx.globalAlpha = 0.2 + rng() * 0.5;
-      ctx.fillStyle = pick(rng, pal.colors);
-      ctx.beginPath();
-      for (let s = 0; s < sides; s++) {
-        const a = rot + (s / sides) * Math.PI * 2;
-        const rr = size * (0.5 + rng() * 0.5);
-        s === 0 ? ctx.moveTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr)
-                : ctx.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr);
-      }
-      ctx.closePath(); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
-  function rWaves(ctx, w, h, pal, rng) {
-    const layers = 5 + Math.floor(rng() * 5);
-    for (let l = 0; l < layers; l++) {
-      const baseY = h * (0.15 + (l / layers) * 0.95);
-      const amp = h * (0.04 + rng() * 0.12);
-      const freq = 1 + rng() * 3;
-      const phase = rng() * Math.PI * 2;
-      ctx.globalAlpha = 0.75 + rng() * 0.25;
-      ctx.fillStyle = pick(rng, pal.colors);
-      ctx.beginPath();
-      ctx.moveTo(0, h);
-      for (let x = 0; x <= w; x += 6) {
-        ctx.lineTo(x, baseY + Math.sin((x / w) * Math.PI * 2 * freq + phase) * amp);
-      }
-      ctx.lineTo(w, h);
-      ctx.closePath(); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
-  function rDots(ctx, w, h, pal, rng) {
-    const cell = Math.max(w, h) * (0.045 + rng() * 0.05);
-    const fx = rng() * w, fy = rng() * h;
-    const maxD = Math.hypot(w, h);
-    for (let y = cell / 2; y < h + cell; y += cell) {
-      for (let x = cell / 2; x < w + cell; x += cell) {
-        const d = Math.hypot(x - fx, y - fy) / maxD;
-        ctx.globalAlpha = 0.55 + rng() * 0.45;
-        ctx.fillStyle = pick(rng, pal.colors);
-        ctx.beginPath();
-        ctx.arc(x, y, Math.max(0.6, (1 - d) * cell * 0.5 * (0.6 + rng() * 0.5)), 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    ctx.globalAlpha = 1;
-  }
-  const RENDERERS = [rTriangles, rCircles, rStripes, rSplatter, rConcentric, rShards, rWaves, rDots];
-
-  /* ---------- Painting ---------- */
-  function paint(canvas, spec) {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cw = canvas.clientWidth || canvas.parentElement.clientWidth || 300;
-    const chh = canvas.clientHeight || canvas.parentElement.clientHeight || 300;
-    canvas.width = Math.max(1, Math.round(cw * dpr));
-    canvas.height = Math.max(1, Math.round(chh * dpr));
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const rng = mulberry32(spec.seed);
-    const pal = spec.style || STYLES[STYLE_NAMES[Math.floor(rng() * STYLE_NAMES.length)]];
-    const renderer = RENDERERS[spec.rendererIndex != null ? spec.rendererIndex : Math.floor(rng() * RENDERERS.length)];
-    const w = cw, h = chh;
-    ctx.fillStyle = pal.bg;
-    ctx.fillRect(0, 0, w, h);
-    renderer(ctx, w, h, pal, rng);
-    const vg = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.hypot(w, h) * 0.62);
-    vg.addColorStop(0, "rgba(0,0,0,0)");
-    vg.addColorStop(1, "rgba(0,0,0,0.4)");
-    ctx.fillStyle = vg;
-    ctx.fillRect(0, 0, w, h);
-    return pal;
-  }
-
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* ---------- Device detection: iPhone vs Android frame ---------- */
-  const ua = navigator.userAgent;
-  const isApple = /iPhone|iPad|iPod|Macintosh/.test(ua) && !/Android/.test(ua);
-  const phone = document.getElementById("phone");
-  phone.classList.add(isApple ? "ios" : "android");
-
-  /* ---------- Hero: infinite wall ---------- */
-  const heroA = document.getElementById("hero-a");
-  const heroB = document.getElementById("hero-b");
-  let heroFront = heroA, heroBack = heroB;
-  let heroSpec = { seed: newSeed() };
-  paint(heroFront, heroSpec);
-  heroBack.style.opacity = "0";
-  function heroNext() {
-    heroSpec = { seed: newSeed() };
-    paint(heroBack, heroSpec);
-    heroBack.style.opacity = "1";
-    heroFront.style.opacity = "0";
-    [heroFront, heroBack] = [heroBack, heroFront];
-  }
-  let heroVisible = true;
-  if (!reducedMotion) {
-    setInterval(() => { if (heroVisible && !document.hidden) heroNext(); }, 8000);
-  }
-  new IntersectionObserver((e) => { heroVisible = e[0].isIntersecting; }).observe(document.querySelector(".hero"));
-  document.getElementById("hero-generate").addEventListener("click", heroNext);
-
-  /* ---------- Phone screen (crossfading canvases + optional screenshots) ---------- */
-  const phoneA = document.getElementById("phone-a");
-  const phoneB = document.getElementById("phone-b");
-  const phoneShot = document.getElementById("phone-shot");
-  let phoneFront = phoneA, phoneBack = phoneB;
-  let phoneSpec = { seed: newSeed(), rendererIndex: 0, style: STYLES.Neon };
-  requestAnimationFrame(() => { paint(phoneFront, phoneSpec); phoneBack.style.opacity = "0"; });
-
-  function phoneShow(spec) {
-    phoneSpec = spec;
-    paint(phoneBack, spec);
-    phoneBack.style.opacity = "1";
-    phoneFront.style.opacity = "0";
-    [phoneFront, phoneBack] = [phoneBack, phoneFront];
-  }
-
-  // Screenshot overrides: drop assets/screenshots/step-0.png … step-5.png to
-  // replace the generated art inside the phone for that story step.
-  const stepShots = [];
-  for (let i = 0; i < 6; i++) {
-    const img = new Image();
-    img.src = `assets/screenshots/step-${i}.png`;
-    img.onload = () => { stepShots[i] = img.src; };
-    img.onerror = () => { stepShots[i] = null; };
-  }
-
-  /* ---------- Story scroll engine ---------- */
-  const story = document.getElementById("story");
-  const steps = [...document.querySelectorAll(".step")];
-  const N = steps.length;
-
-  // Per-step phone pose: x (vw), rot (deg), scale — mirrored against copy side.
-  const POSES = [
-    { x:  16, rot:  -5, scale: 1.00 },
-    { x: -17, rot:   6, scale: 0.95 },
-    { x:  17, rot:  -7, scale: 0.97 },
-    { x: -16, rot:   5, scale: 1.02 },
-    { x:  17, rot:  -6, scale: 0.95 },
-    { x: -16, rot:   4, scale: 0.98 },
-  ];
-  // Wallpaper mood per step.
-  const STEP_SPECS = [
-    () => ({ seed: newSeed(), rendererIndex: 5, style: STYLES.Vibrant }),
-    () => ({ seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: phoneSpec.style }),
-    () => ({ seed: newSeed(), rendererIndex: phoneSpec.rendererIndex, style: randomStyle() }),
-    () => ({ seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: randomStyle() }),
-    () => ({ seed: newSeed(), rendererIndex: 6, style: STYLES.Dark }),
-    () => ({ seed: newSeed(), rendererIndex: 7, style: STYLES.Dark }),
-  ];
-
-  const isMobile = () => window.matchMedia("(max-width: 47.9375rem)").matches;
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-  const ease = (t) => t * t * (3 - 2 * t);
-
-  let cur = { x: POSES[0].x, rot: POSES[0].rot, scale: POSES[0].scale };
-  let activeStep = -1;
-  let storyVisible = false;
-  let rafId = null;
-
-  function setAccent(style) {
-    const brightest = [...style.colors].sort((a, b) => relum(b) - relum(a))[0];
-    document.documentElement.style.setProperty("--accent", brightest);
-  }
-
-  function enterStep(i) {
-    if (i === activeStep) return;
-    activeStep = i;
-    const spec = STEP_SPECS[i]();
-    if (stepShots[i]) {
-      phoneShot.src = stepShots[i];
-      phoneShot.hidden = false;
-      phoneShot.style.opacity = "1";
-    } else {
-      phoneShot.style.opacity = "0";
-      phoneShow(spec);
-      setAccent(spec.style);
-    }
-    if (i === 0) {
-      const ed = document.getElementById("edition");
-      ed.textContent = String(1 + Math.floor(Math.random() * 8999999)).padStart(7, "0");
-    }
-    if (i === 1) cycleNames();
-  }
-
-  // Step 1: pattern-name ticker
-  const NAME_POOL = ["Serengeti", "Havana", "Miami", "Nassau", "Balinese", "Siamese",
-                     "Chartreux", "Aleppo", "Lantana", "Splatter", "Cereus", "Vindaloo",
-                     "Marjoram", "Opuntia", "Antares"];
-  const namesEl = document.getElementById("pattern-names");
-  let nameTimer = null;
-  function cycleNames() {
-    if (nameTimer || reducedMotion) return;
-    nameTimer = setInterval(() => {
-      if (activeStep !== 1 || document.hidden) return;
-      const shuffled = [...NAME_POOL].sort(() => Math.random() - 0.5).slice(0, 3);
-      namesEl.textContent = shuffled.join(", ");
-    }, 1800);
-  }
-
-  // Step 2: palette cycling while active
-  if (!reducedMotion) {
-    setInterval(() => {
-      if (activeStep !== 2 || document.hidden || !storyVisible) return;
-      const spec = { seed: newSeed(), rendererIndex: phoneSpec.rendererIndex, style: randomStyle() };
-      phoneShow(spec);
-      setAccent(spec.style);
-    }, 2200);
-    // Step 3: auto-demo gestures (subtle) while active
-    setInterval(() => {
-      if (activeStep !== 3 || document.hidden || !storyVisible) return;
-      phoneShow(STEP_SPECS[3]());
-    }, 2600);
-  }
-
-  function storyProgress() {
-    const rect = story.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const scrolled = -rect.top;
-    const total = rect.height - vh;
-    return clamp(scrolled / total, 0, 1) * (N - 1 + 0.999);
-  }
-
-  function frame() {
-    const p = clamp(storyProgress(), 0, N - 1);
-    const i = clamp(Math.floor(p), 0, N - 1);
-    const frac = ease(clamp(p - i, 0, 1));
-    const a = POSES[i], b = POSES[Math.min(i + 1, N - 1)];
-    const mobile = isMobile();
-    const target = {
-      x: mobile ? 0 : lerp(a.x, b.x, frac),
-      rot: lerp(a.rot, b.rot, frac) * (mobile ? 0.5 : 1),
-      scale: lerp(a.scale, b.scale, frac),
-    };
-    const s = reducedMotion ? 1 : 0.14;
-    cur.x = lerp(cur.x, target.x, s);
-    cur.rot = lerp(cur.rot, target.rot, s);
-    cur.scale = lerp(cur.scale, target.scale, s);
-    phone.style.setProperty("--px", cur.x.toFixed(3) + "vw");
-    phone.style.setProperty("--prot", cur.rot.toFixed(3) + "deg");
-    phone.style.setProperty("--pscale", cur.scale.toFixed(4));
-    // gentle float
-    if (!reducedMotion) {
-      phone.style.setProperty("--py", (Math.sin(performance.now() / 1600) * 6).toFixed(2) + "px");
-    }
-    // copy opacity
-    const round = Math.round(p);
-    steps.forEach((st, idx) => {
-      const d = Math.abs(p - idx);
-      const o = clamp(1 - d * 1.7, 0, 1);
-      st.style.opacity = o.toFixed(3);
-      st.style.transform = `translate(var(--cx, 0), calc(-50% + ${((idx - p) * -30).toFixed(1)}px))`;
-      st.style.pointerEvents = o > 0.5 ? "auto" : "none";
-    });
-    enterStep(round);
-    rafId = storyVisible ? requestAnimationFrame(frame) : null;
-  }
-
-  new IntersectionObserver((entries) => {
-    storyVisible = entries[0].isIntersecting;
-    if (storyVisible && rafId === null) rafId = requestAnimationFrame(frame);
-  }, { rootMargin: "10% 0px" }).observe(story);
-
-  /* Swiping the story phone generates new wallpapers, like the app */
-  let swipeStart = null;
-  phone.addEventListener("pointerdown", (e) => { swipeStart = { x: e.clientX, y: e.clientY }; });
-  phone.addEventListener("pointerup", (e) => {
-    if (!swipeStart) return;
-    const dx = e.clientX - swipeStart.x, dy = e.clientY - swipeStart.y;
-    swipeStart = null;
-    let spec;
-    if (Math.hypot(dx, dy) < 24 || Math.abs(dy) >= Math.abs(dx)) {
-      spec = { seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: randomStyle() };
-    } else if (dx < 0) {
-      spec = { seed: newSeed(), rendererIndex: Math.floor(Math.random() * RENDERERS.length), style: phoneSpec.style };
-    } else {
-      spec = { seed: newSeed(), rendererIndex: phoneSpec.rendererIndex, style: randomStyle() };
-    }
-    phoneShot.style.opacity = "0";
-    phoneShow(spec);
-    setAccent(spec.style);
-  });
-
-  /* ---------- Download background ---------- */
-  const dlCanvas = document.getElementById("dl-c");
-  const dlSpec = { seed: newSeed(), rendererIndex: 3, style: STYLES.Vibrant };
-  const dlSection = document.querySelector(".download");
-  new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) paint(dlCanvas, dlSpec);
-  }).observe(dlSection);
-
-  /* ---------- Resize ---------- */
-  let resizeTimer = null;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      paint(heroFront, heroSpec);
-      paint(phoneFront, phoneSpec);
-      paint(dlCanvas, dlSpec);
-    }, 200);
-  });
 })();
 </script>
+
 </body>
 </html>
