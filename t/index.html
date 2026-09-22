@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>A wallpaper for you — Tapet</title>
+<meta name="description" content="Someone sent you a wallpaper made in Tapet. Open it in the app to make it yours.">
+<meta property="og:title" content="Someone sent you a wallpaper">
+<meta property="og:description" content="Made in Tapet — open it in the app to change the colours, the pattern, anything.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<style>
+  @font-face {
+    font-family: "Brunson";
+    src: url("/assets/fonts/brunson.ttf") format("truetype");
+    font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #ededed;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1.25rem;
+    line-height: 1.6;
+  }
+  main { width: 100%; max-width: 26rem; text-align: center; }
+  .brand { font-family: "Brunson", "Arial Black", sans-serif; font-size: 2rem; margin-block-end: 2rem; }
+  h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); letter-spacing: -0.02em; margin-block-end: 0.5rem; }
+  p { color: #9f9f9f; margin-block-end: 1.75rem; }
+  /* The palette the wallpaper is made of — the only part of it we can show without the app. */
+  .palette {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    height: 11rem;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    margin-block-end: 1.5rem;
+    background: #161617;
+  }
+  .palette span { display: block; }
+  .pattern { color: #ededed; font-weight: 600; margin-block-end: 1.75rem; }
+  .pattern small { display: block; color: #9f9f9f; font-weight: 400; }
+  .actions { display: grid; gap: 0.75rem; }
+  a.btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.92); color: #0a0a0a;
+    font-weight: 700; text-decoration: none;
+  }
+  a.btn.secondary { background: transparent; color: #ededed; border: 1px solid rgba(255,255,255,0.25); }
+  a.btn:hover, a.btn:focus-visible { background: #fff; color: #0a0a0a; }
+  a:focus-visible { outline: 3px solid #4fd8c4; outline-offset: 3px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">Tapet</div>
+
+  <div class="palette" id="palette" aria-hidden="true"></div>
+
+  <h1>Someone sent you a wallpaper</h1>
+  <p id="blurb">Open it in Tapet to set it — or change the colours, the pattern, anything. It is yours from there.</p>
+
+  <div class="pattern hidden" id="pattern"></div>
+
+  <div class="actions">
+    <a class="btn" id="open" href="#">Open in Tapet</a>
+    <a class="btn secondary" id="android" href="https://play.google.com/store/apps/details?id=com.sharpregion.tapet">Get Tapet for Android</a>
+    <a class="btn secondary" id="ios" href="https://apps.apple.com/us/app/tapet/id6504771735">Get Tapet for iPhone</a>
+  </div>
+</main>
+
+<script>
+  // The link is tapet.app/t/<id>. With the app installed the OS takes the link before this page
+  // is ever reached; everyone else lands here, so show them what they were sent and where to get
+  // it. GitHub Pages can't route a path segment, so 404.html forwards /t/<id> here as ?id=<id>.
+  var params = new URLSearchParams(location.search);
+  var id = params.get("id") || location.pathname.replace(/^\/t\/?/, "").replace(/\/$/, "");
+
+  var openLink = document.getElementById("open");
+  openLink.href = id ? "https://tapet.app/t/" + encodeURIComponent(id) : "https://tapet.app/";
+
+  // Show the platform's own store first; the other stays as the second option.
+  var isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (isIos) {
+    var actions = document.querySelector(".actions");
+    actions.appendChild(document.getElementById("android"));
+  }
+
+  // The wallpaper itself is generated on the device, so there is no picture of it to show here.
+  // Its palette is public though (the id is the secret), and five colours read as a wallpaper
+  // far better than a paragraph does.
+  var SUPABASE_URL = "https://lyltxyscsijsijovigjz.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5bHR4eXNjc2lqc2lqb3ZpZ2p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4ODMxMTgsImV4cCI6MjA4ODQ1OTExOH0.KAXduQAWpsPTaa5KXoufZjpsDOfaw0pqYEo8EUMxpZc";
+
+  function toCss(signed) {
+    // Colours are stored the way Android packs them: a signed 32-bit ARGB integer.
+    var v = (Number(signed) >>> 0) & 0xffffff;
+    return "#" + v.toString(16).padStart(6, "0");
+  }
+
+  if (id) {
+    fetch(SUPABASE_URL + "/rest/v1/shared_tapets?select=palette_colors&id=eq." + encodeURIComponent(id), {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+    })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        if (!rows.length) {
+          document.getElementById("blurb").textContent =
+            "This link has expired or was mistyped. Tapet makes endless wallpapers of its own, though.";
+          return;
+        }
+        var palette = document.getElementById("palette");
+        rows[0].palette_colors.split(",").forEach(function (c) {
+          var span = document.createElement("span");
+          span.style.background = toCss(c);
+          palette.appendChild(span);
+        });
+      })
+      .catch(function () { /* The page stands on its own without the colours. */ });
+  }
+</script>
+</body>
+</html>

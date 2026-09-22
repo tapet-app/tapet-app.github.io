@@ -39,6 +39,15 @@
 </style>
 </head>
 <body>
+<script>
+  // GitHub Pages serves this page for any path it doesn't have a file for, which is how a
+  // wallpaper someone sent — tapet.app/t/<id> — gets to the page that can show it. Runs before
+  // anything is painted, so nobody sees "page not found" flash on a link that is perfectly good.
+  (function () {
+    var match = location.pathname.match(/^\/t\/([^/?#]+)\/?$/);
+    if (match) location.replace("/t/?id=" + encodeURIComponent(match[1]) + location.hash);
+  })();
+</script>
 <main>
   <p class="brand">Tapet</p>
   <h1>This page was never generated.</h1>

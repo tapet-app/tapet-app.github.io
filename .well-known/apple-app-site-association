@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["EMS457U755.com.sharpregion.Tapet"],
+        "components": [
+          {
+            "/": "/t/*",
+            "comment": "A wallpaper someone sent opens in the app rather than here"
+          }
+        ]
+      }
+    ]
+  }
+}
