@@ -41,11 +41,11 @@
 <body>
 <script>
   // GitHub Pages serves this page for any path it doesn't have a file for, which is how a
-  // wallpaper someone sent — tapet.app/t/<id> — gets to the page that can show it. Runs before
+  // wallpaper someone sent — tapet.app/t/<id> — ends up here. Reaching the web at all means no
+  // app took the link, so there is nothing to open: send them to the landing page. Runs before
   // anything is painted, so nobody sees "page not found" flash on a link that is perfectly good.
   (function () {
-    var match = location.pathname.match(/^\/t\/([^/?#]+)\/?$/);
-    if (match) location.replace("/t/?id=" + encodeURIComponent(match[1]) + location.hash);
+    if (/^\/t(\/|$)/.test(location.pathname)) location.replace("/");
   })();
 </script>
 <main>
